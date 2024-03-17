@@ -282,6 +282,20 @@ var3 = function(s.obs,f1,f2,f3,f4,f5,f6,f7,f8,t1,t2,T1,T2){
   }
   return(ans)
 }
+var_m = function(s.obs,f1,f2,t,TT){
+  w = t/TT
+  a = max((f1-f2),1)
+  
+  if(f2==0){
+    Q0 = (t-1)/t * (1-w)/w * (f2-1)
+  }else{
+    Q0 = (t-1)/t * (1-w)*f2^2/(f2 + w * a)
+  }
+  
+  # S
+  ans = s.obs + Q0
+  return(ans)
+}
 
 ## 原版
 covmatrix = function(X,Y,s,O){
@@ -318,6 +332,21 @@ covmatrix3 = function(X,Y,s,O){
   f = c(f.fun2(X,Y)) #用Sobs去建立covarance matrix
   f = c(f[1:8],s-O)
   cov_matrix = matrix(0, nrow = 9, ncol = 9)
+  for(i in 1:length(f)){
+    for(j in 1:length(f)){
+      if(i == j){
+        cov_matrix[i,i] = f[i]*(1-(f[i]/s))
+      }else{
+        cov_matrix[i,j] = -f[i]*(f[j]/s)
+      }
+    }
+  }
+  return(cov_matrix)
+}
+covmatrix_m = function(X,s,O){
+  f = c(f(X)) #用Sobs去建立covarance matrix
+  f = c(f[1:2],s-O)
+  cov_matrix = matrix(0, nrow = 3, ncol = 3)
   for(i in 1:length(f)){
     for(j in 1:length(f)){
       if(i == j){
@@ -380,6 +409,12 @@ SD3  = function(X,Y,t1,t2,T1,T2,O,d){
         (var3(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8]+d,t1,t2,T1,T2)-var3(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2))/d,-1)
   return(V)
 }
+SD_m  = function(X,t,TT,O,d){
+  f = f(X)
+  V = c((var_m(O,f[1]+d,f[2],t,TT)-var_m(O,f[1],f[2],t,TT))/d,
+        (var_m(O,f[1],f[2]+d,t,TT)-var_m(O,f[1],f[2],t,TT))/d,-1)
+  return(V)
+}
 
 # SE
 se = function(X,Y,t1,t2,T1,T2,O,E,d){
@@ -400,9 +435,16 @@ se12 = function(X,Y,t1,t2,T1,T2,O,E12,d){
   SD12 = sqrt(t(sd12) %*% matrix12 %*% sd12)
   return(SD12)
 }
-se3 = function(X,Y,t1,t2,T1,T2,O,E,d){
+se3 = function(X,Y,t1,t2,T1,T2,O,E3,d){
   sd = SD3(X,Y,t1,t2,T1,T2,O,d)
-  matrix = covmatrix3(X,Y,E,O)
+  matrix = covmatrix3(X,Y,E3,O)
+  SD = sqrt(abs(t(sd) %*% matrix %*% sd))
+  return(SD)
+}
+
+se_m = function(X,t,TT,O,E,d){
+  sd = SD_m(X,t,TT,O,d)
+  matrix = covmatrix_m(X,E,O)
   SD = sqrt(abs(t(sd) %*% matrix %*% sd))
   return(SD)
 }
@@ -1094,21 +1136,43 @@ f(rowSums(P_2))
 f(rowSums(P_3))
 f(rowSums(P_4))
 
+## non estimate
 # richness
-length(which(rowSums(P_1)>0))
-length(which(rowSums(P_2)>0))
-length(which(rowSums(P_3)>0))
-length(which(rowSums(P_4)>0))
+S1_O = length(which(rowSums(P_1)>0))
+S2_O = length(which(rowSums(P_2)>0))
+S3_O = length(which(rowSums(P_3)>0))
+S4_O = length(which(rowSums(P_4)>0))
 
 # share
-length(which(rowSums(P_1)*rowSums(P_2)>0))
-length(which(rowSums(P_1)*rowSums(P_3)>0))
-length(which(rowSums(P_1)*rowSums(P_4)>0))
-length(which(rowSums(P_2)*rowSums(P_3)>0))
-length(which(rowSums(P_2)*rowSums(P_4)>0))
-length(which(rowSums(P_3)*rowSums(P_4)>0))
+S12_O = length(which(rowSums(P_1)*rowSums(P_2)>0))
+S13_O = length(which(rowSums(P_1)*rowSums(P_3)>0))
+S14_O = length(which(rowSums(P_1)*rowSums(P_4)>0))
+S23_O = length(which(rowSums(P_2)*rowSums(P_3)>0))
+S24_O = length(which(rowSums(P_2)*rowSums(P_4)>0))
+S34_O = length(which(rowSums(P_3)*rowSums(P_4)>0))
 
-# estiamte
+# species richness of two community 
+S.1_O = S1_O+S2_O-S12_O
+S.2_O = S1_O+S3_O-S13_O
+S.3_O = S1_O+S4_O-S14_O
+S.4_O = S2_O+S3_O-S23_O
+S.5_O = S2_O+S4_O-S24_O
+S.6_O = S3_O+S4_O-S34_O
+
+
+# beta diversity
+B1_O = 1 - (S12_O/S.1_O)
+B2_O = 1 - (S13_O/S.2_O)
+B3_O = 1 - (S14_O/S.3_O)
+B4_O = 1 - (S23_O/S.4_O)
+B5_O = 1 - (S24_O/S.5_O)
+B6_O = 1 - (S34_O/S.6_O)
+B_O = c(B1_O,B2_O,B3_O,B4_O,B5_O,B6_O)
+
+
+
+
+## estiamte
 r1 = data.frame(round(rbind(realdata1(P_1,P_2,.1),realdata1(P_1,P_2,.2),
                             realdata1(P_1,P_2,.3),realdata1(P_1,P_2,.4),
                             realdata1(P_1,P_2,.5),realdata1(P_1,P_2,.6),
@@ -1139,11 +1203,21 @@ I = 17
 r = rbind(r1[I,],r2[I,],r3[I,],r4[I,],r5[I,],r6[I,])
 write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
 
+# one community richness
 S1 = more(rowSums(P_1),T1,.5)
 S2 = more(rowSums(P_2),T2,.5)
 S3 = more(rowSums(P_3),T3,.5)
 S4 = more(rowSums(P_4),T4,.5)
-round(c(S1,S2,S3,S4),1)
+S = round(c(S1,S2,S3,S4),1);S
+
+# one community richness SD
+a = .5
+Sd1 = se_m(rowSums(P_1),T1,ceiling(T1)/a,S1_O,S1,.01)
+Sd2 = se_m(rowSums(P_2),T2,ceiling(T2)/a,S2_O,S2,.01)
+Sd3 = se_m(rowSums(P_3),T3,ceiling(T3)/a,S3_O,S3,.01)
+Sd4 = se_m(rowSums(P_4),T4,ceiling(T4)/a,S4_O,S4,.01)
+Sd = round(c(Sd1,Sd2,Sd3,Sd4),1);Sd
+cbind(S,Sd)
 
 S12 = r1$E[17];S13 = r2$E[17];S14 = r3$E[17];S23 = r4$E[17];S24 = r5$E[17];S34 = r6$E[17]
 
@@ -1154,7 +1228,9 @@ S.3 = S1+S4-S14
 S.4 = S2+S3-S23
 S.5 = S2+S4-S24
 S.6 = S3+S4-S34
+
 round(c(S.1,S.2,S.3,S.4,S.5,S.6),1)
+round(c(S.1_O,S.2_O,S.3_O,S.4_O,S.5_O,S.6_O),1)
 
 # beta diversity
 B1 = 1 - (S12/S.1)
@@ -1164,9 +1240,23 @@ B4 = 1 - (S23/S.4)
 B5 = 1 - (S24/S.5)
 B6 = 1 - (S34/S.6)
 B = c(B1,B2,B3,B4,B5,B6)
-round(B,2)
 
-# beta diversity plot
+round(B,2)
+round(B_O,2)
+
+## beta diversity plot
+# non estimate
+j_O = matrix(c(NA,B_O[1:3],
+             B_O[1],NA,B_O[4:5],
+             B_O[2],B_O[4],NA,B_O[6],
+             B_O[3],B_O[5],B_O[6],NA),4)
+row.names(j_O) = colnames(j_O) = c('foothill','lower conifer','upper conifer','high country')
+jaccard_dist_O = as.dist(j_O);jaccard_dist_O
+
+# Hierarchical clustering based on Jaccard distance
+hc_O = hclust(jaccard_dist_O, method = "average")
+
+# estimate
 j = matrix(c(NA,B[1:3],
              B[1],NA,B[4:5],
              B[2],B[4],NA,B[6],
@@ -1178,5 +1268,7 @@ jaccard_dist = as.dist(j);jaccard_dist
 hc = hclust(jaccard_dist, method = "average")
 
 # Plot the dendrogram
-plot(hc, xlab = "Samples", ylab = "Distance")
+par(mfrow=c(1,2))
+plot(hc_O, xlab = "Samples", ylab = "Distance", main = "non-Estimate")
+plot(hc, xlab = "Samples", ylab = "Distance", main = "Estimate")
 
