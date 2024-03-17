@@ -643,10 +643,10 @@ csv = rbind(list0[I,],list0[I+a,],list0[I+a*2,],list0[I+a*3,],
             list0[II,],list0[II+a,],list0[II+a*2,],list0[II+a*3,],
             list0[III,],list0[III+a,],list0[III+a*2,],list0[III+a*3,],
             list0[IV,],list0[IV+a,],list0[IV+a*2,],list0[IV+a*3,])
-write.csv(csv[,c(1:7)], "D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\table\\without share.csv")
+write.csv(csv[,c(1:7)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\without share.csv")
 
 A = seq(from = 1, to = 31, 2)
-write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\table\\without share.csv")
+write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\without share.csv")
 
 rm(I,II,III,IV,list0,A,csv);gc()
 ################################## plot ########################################
@@ -762,9 +762,9 @@ legend("topright",legend  = c("BB","Pan"),
 
 ############################ real data #########################################
 ##### 火災後鳥類 #####
-P_1 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\火災后鳥類\\data1.csv"))
-P_2 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\火災后鳥類\\data2.csv"))
-P_3 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\火災后鳥類\\data3.csv"))
+P_1 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\火災后鳥類\\data1.csv"))
+P_2 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\火災后鳥類\\data2.csv"))
+P_3 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\火災后鳥類\\data3.csv"))
 P_1 = P_1[,-1]
 P_2 = P_2[,-1]
 P_3 = P_3[,-1]
@@ -798,7 +798,7 @@ r3 = data.frame(round(rbind(realdata(P_X,P_Y,20,20),realdata(P_X,P_Y,40,40),real
 r.3 = data.frame(rbind(r3[c(1,2),],r3[c(5,6),],r3[c(9,10),],r3[c(13,14),],r3[c(17,18),]))
 
 r. = rbind(r.1,r.2,r.3)
-write.csv(r., "D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\table\\real.csv")
+write.csv(r., "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
 
 ##  real plot ##
 # 不同模型
@@ -894,10 +894,10 @@ legend("bottomright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
        pch=c(16,17),merge = TRUE)
 
 ##### Sequoia National Park #####
-P_1 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\微生物 內華達\\data1.csv"))
-P_2 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\微生物 內華達\\data2.csv"))
-P_3 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\微生物 內華達\\data3.csv"))
-P_4 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\微生物 內華達\\data4.csv"))
+P_1 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data1.csv"))
+P_2 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data2.csv"))
+P_3 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data3.csv"))
+P_4 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data4.csv"))
 P_1 = P_1[,-1];P_2 = P_2[,-1];P_3 = P_3[,-1];P_4 = P_4[,-1]
 
 p1 = rowSums(P_1)/ncol(P_1);p2 = rowSums(P_2)/ncol(P_2)
@@ -948,7 +948,7 @@ round(c(S1,S2,S3,S4),1)
 set.seed(123)
 r = data.frame(round(rbind(realdata1(P_1,P_2),realdata1(P_1,P_3),realdata1(P_1,P_4),
                            realdata1(P_2,P_3),realdata1(P_2,P_4),realdata1(P_3,P_4)),2));r
-write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\table\\real.csv")
+write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
 
 S12 = r$E[1];S13 = r$E[3];S14 = r$E[5];S23 = r$E[7];S24 = r$E[9];S34 = r$E[11]
 
@@ -972,10 +972,17 @@ B = c(B1,B2,B3,B4,B5,B6)
 round(B,2)
 
 # beta diversity plot
-m = data.frame(matrix(c(NA,B[1:3],
-         B[1],NA,B[4:5],
-         B[2],B[4],NA,B[6],
-         B[3],B[5],B[6],NA),4,4));m
-row.names(m) = colnames(m) = c('foothill','lower conifer','upper conifer','high country')
-library(pheatmap)
-pheatmap(m,display_numbers = TRUE)
+# beta diversity plot
+j = matrix(c(NA,B[1:3],
+             B[1],NA,B[4:5],
+             B[2],B[4],NA,B[6],
+             B[3],B[5],B[6],NA),4)
+row.names(j) = colnames(j) = c('foothill','lower conifer','upper conifer','high country')
+jaccard_dist = as.dist(j);jaccard_dist
+
+# Hierarchical clustering based on Jaccard distance
+hc = hclust(jaccard_dist, method = "average")
+
+# Plot the dendrogram
+plot(hc, xlab = "Samples", ylab = "Distance")
+

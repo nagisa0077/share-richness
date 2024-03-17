@@ -558,11 +558,11 @@ realdata = function(P_X,P_Y,a){
   return(result)
 }
 realdata1 = function(P_X,P_Y,a){
+  # T and t about sample fraction
   t1 = ncol(P_X)
   t2 = ncol(P_Y)
   T1 = ceiling(t1/a)
   T2 = ceiling(t2/a)
-  
   
   # set sample
   X = rowSums(P_X)
@@ -1167,10 +1167,16 @@ B = c(B1,B2,B3,B4,B5,B6)
 round(B,2)
 
 # beta diversity plot
-m = data.frame(matrix(c(NA,B[1:3],
-                        B[1],NA,B[4:5],
-                        B[2],B[4],NA,B[6],
-                        B[3],B[5],B[6],NA),4,4));m
-row.names(m) = colnames(m) = c('foothill','lower conifer','upper conifer','high country')
-library(pheatmap)
-pheatmap(m,display_numbers = TRUE)
+j = matrix(c(NA,B[1:3],
+             B[1],NA,B[4:5],
+             B[2],B[4],NA,B[6],
+             B[3],B[5],B[6],NA),4)
+row.names(j) = colnames(j) = c('foothill','lower conifer','upper conifer','high country')
+jaccard_dist = as.dist(j);jaccard_dist
+
+# Hierarchical clustering based on Jaccard distance
+hc = hclust(jaccard_dist, method = "average")
+
+# Plot the dendrogram
+plot(hc, xlab = "Samples", ylab = "Distance")
+
