@@ -1,7 +1,7 @@
 library(dplyr)
 library(stringr)
 ################################# read data ####################################
-data = read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\微生物 內華達\\SEKIPaper2_2023_dryad.csv")
+data = read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\SEKIPaper2_2023_dryad.csv")
 # data = select(data,enter.name,macrosite,plot = plot..,location = Aspect...A)
 data = select(data,enter.name,macrosite,plot = plot..,location = elev..ft.)
 ############################### function #######################################
