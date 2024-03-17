@@ -558,18 +558,15 @@ realdata = function(P_X,P_Y,a){
   return(result)
 }
 realdata1 = function(P_X,P_Y,a){
-  population1 = P_X
-  population2 = P_Y
-  
-  T1 = ncol(P_X)
-  T2 = ncol(P_Y)
-  t1 = ceiling(a*T1)
-  t2 = ceiling(a*T2)
+  t1 = ncol(P_X)
+  t2 = ncol(P_Y)
+  T1 = ceiling(t1/a)
+  T2 = ceiling(t2/a)
   
   
   # set sample
-  X = Sample(T1,t1,population1)
-  Y = Sample(T2,t2,population2)
+  X = rowSums(P_X)
+  Y = rowSums(P_Y)
   
   # sample coverage
   CX = 1 - (sum(X==1)/sum(X))
@@ -856,7 +853,7 @@ write.csv(csv[,c(1:7)], "D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\ta
 
 
 A = seq(from = 1, to = 61, 4)
-write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\table\\without share.csv")
+write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\without share.csv")
 
 rm(I,II,III,IV,list0,csv);gc()
 ################################## plot ########################################
@@ -1008,8 +1005,8 @@ legend("topright",legend  = c("wBB1","wBB2","wChao2","BB"),
 
 ############################ real data #########################################
 ##### BCI #####
-P_X = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\BCI\\bci.tree\\BCI1.csv"))
-P_Y = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\BCI\\bci.tree\\BCI8.csv"))
+P_X = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\BCI\\bci.tree\\BCI1.csv"))
+P_Y = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\BCI\\bci.tree\\BCI8.csv"))
 P_X = P_X[,-1]
 P_Y = P_Y[,-1]
 common_rows = which(rowSums(P_X)*rowSums(P_Y)>0)
@@ -1027,7 +1024,7 @@ set.seed(123)
 r = data.frame(round(rbind(realdata(P_X,P_Y,.1),realdata(P_X,P_Y,.2),realdata(P_X,P_Y,.3),realdata(P_X,P_Y,.4),
                            realdata(P_X,P_Y,.5),realdata(P_X,P_Y,.6),realdata(P_X,P_Y,.7),realdata(P_X,P_Y,.8),realdata(P_X,P_Y,.9)),2));r
 r. = data.frame(rbind(r[1:3,],r[7:9,],r[13:15,],r[19:21,],r[25:27,]))
-write.csv(r., "D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\table\\real.csv")
+write.csv(r., "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
 
 ##  real plot ##
 # 不同模型
@@ -1075,12 +1072,11 @@ legend("bottomright",legend  = c("wBB1","wBB2","wChao2"),
 
 
 ##### Sequoia National Park #####
-P_1 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\微生物 內華達\\data1.csv"))
-P_2 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\微生物 內華達\\data2.csv"))
-P_3 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\微生物 內華達\\data3.csv"))
-P_4 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\data\\微生物 內華達\\data4.csv"))
+P_1 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data1.csv"))
+P_2 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data2.csv"))
+P_3 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data3.csv"))
+P_4 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data4.csv"))
 P_1 = P_1[,-1];P_2 = P_2[,-1];P_3 = P_3[,-1];P_4 = P_4[,-1]
-
 p1 = rowSums(P_1)/ncol(P_1);p2 = rowSums(P_2)/ncol(P_2)
 p3 = rowSums(P_3)/ncol(P_3);p4 = rowSums(P_4)/ncol(P_4)
 mean(p1);mean(p2);mean(p3);mean(p4)
@@ -1112,55 +1108,7 @@ length(which(rowSums(P_2)*rowSums(P_3)>0))
 length(which(rowSums(P_2)*rowSums(P_4)>0))
 length(which(rowSums(P_3)*rowSums(P_4)>0))
 
-# 12
-P_X = P_1
-P_Y = P_2
-common_rows = which(rowSums(P_X)*rowSums(P_Y)>0)
-O1 = obs(rowSums(P_X[common_rows,]),rowSums(P_Y[common_rows,]))
-# 14
-P_X = P_1
-P_Y = P_4
-common_rows = which(rowSums(P_X)*rowSums(P_Y)>0)
-O3 = obs(rowSums(P_X[common_rows,]),rowSums(P_Y[common_rows,]))
-# 24
-P_X = P_2
-P_Y = P_4
-common_rows = which(rowSums(P_X)*rowSums(P_Y)>0)
-O5 = obs(rowSums(P_X[common_rows,]),rowSums(P_Y[common_rows,]))
-
-#####
-# set.seed(123)
-# times = 1000
-# r1 = data.frame(round(rbind(realdata(P_1,P_2,.1),realdata(P_1,P_2,.2),
-#                             realdata(P_1,P_2,.3),realdata(P_1,P_2,.4),
-#                             realdata(P_1,P_2,.5),realdata(P_1,P_2,.6),
-#                             realdata(P_1,P_2,.7),realdata(P_1,P_2,.8),realdata(P_1,P_2,.9)),2));r1
-# r2 = data.frame(round(rbind(realdata(P_1,P_3,.1),realdata(P_1,P_3,.2),
-#                             realdata(P_1,P_3,.3),realdata(P_1,P_3,.4),
-#                             realdata(P_1,P_3,.5),realdata(P_1,P_3,.6),
-#                             realdata(P_1,P_3,.7),realdata(P_1,P_3,.8),realdata(P_1,P_3,.9)),2));r2
-# r3 = data.frame(round(rbind(realdata(P_1,P_4,.1),realdata(P_1,P_4,.2),
-#                             realdata(P_1,P_4,.3),realdata(P_1,P_4,.4),
-#                             realdata(P_1,P_4,.5),realdata(P_1,P_4,.6),
-#                             realdata(P_1,P_4,.7),realdata(P_1,P_4,.8),realdata(P_1,P_4,.9)),2));r3
-# r4 = data.frame(round(rbind(realdata(P_2,P_3,.1),realdata(P_2,P_3,.2),
-#                             realdata(P_2,P_3,.3),realdata(P_2,P_3,.4),
-#                             realdata(P_2,P_3,.5),realdata(P_2,P_3,.6),
-#                             realdata(P_2,P_3,.7),realdata(P_2,P_3,.8),realdata(P_2,P_3,.9)),2));r4
-# r5 = data.frame(round(rbind(realdata(P_2,P_4,.1),realdata(P_2,P_4,.2),
-#                             realdata(P_2,P_4,.3),realdata(P_2,P_4,.4),
-#                             realdata(P_2,P_4,.5),realdata(P_2,P_4,.6),
-#                             realdata(P_2,P_4,.7),realdata(P_2,P_4,.8),realdata(P_2,P_4,.9)),2));r5
-# r6 = data.frame(round(rbind(realdata(P_3,P_4,.1),realdata(P_3,P_4,.2),
-#                             realdata(P_3,P_4,.3),realdata(P_3,P_4,.4),
-#                             realdata(P_3,P_4,.5),realdata(P_3,P_4,.6),
-#                             realdata(P_3,P_4,.7),realdata(P_3,P_4,.8),realdata(P_3,P_4,.9)),2));r6
-# 
-# 
-# I = c(9:12,17:20,25:28)
-# r = rbind(r1[I,],r2[I,],r3[I,],r4[I,],r5[I,],r6[I,])
-
-#####
+# estiamte
 r1 = data.frame(round(rbind(realdata1(P_1,P_2,.1),realdata1(P_1,P_2,.2),
                             realdata1(P_1,P_2,.3),realdata1(P_1,P_2,.4),
                             realdata1(P_1,P_2,.5),realdata1(P_1,P_2,.6),
@@ -1189,7 +1137,7 @@ r6 = data.frame(round(rbind(realdata1(P_3,P_4,.1),realdata1(P_3,P_4,.2),
 I = c(9:12,17:20,25:28)
 I = 17
 r = rbind(r1[I,],r2[I,],r3[I,],r4[I,],r5[I,],r6[I,])
-write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\table\\real.csv")
+write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
 
 S1 = more(rowSums(P_1),T1,.5)
 S2 = more(rowSums(P_2),T2,.5)
