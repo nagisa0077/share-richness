@@ -63,7 +63,7 @@ fill = function(Z,S12,TT){
 }
 
 # estimater
-Pan = function(X,Y,T1,T2,t1,t2){
+Pan = function(X,Y,t1,t2){
   f = f.fun(X,Y)
   I = which(X*Y>0)
   s.obs = length(I)
@@ -79,7 +79,7 @@ Pan = function(X,Y,T1,T2,t1,t2){
   }
   return(ans)
 } 
-BB = function(X,Y,T1,T2,t1,t2){
+BB = function(X,Y,t1,t2){
   f = f.fun(X,Y)
   I = which(X*Y>0)
   s.obs = length(I)
@@ -124,7 +124,7 @@ more = function(X,t){
 }
 
 # var
-var = function(s.obs,f1,f2,f3,f4,f5,f6,f7,f8,t1,t2,T1,T2){
+var = function(s.obs,f1,f2,f3,f4,f5,f6,f7,f8,t1,t2){
   K1 = (t1-1)/t1
   K2 = (t2-1)/t2
   
@@ -147,7 +147,7 @@ var = function(s.obs,f1,f2,f3,f4,f5,f6,f7,f8,t1,t2,T1,T2){
   }
   return(ans)
 }
-var_Pan = function(s.obs,f1,f2,f3,f4,f5,f6,t1,t2,T1,T2){
+var_Pan = function(s.obs,f1,f2,f3,f4,f5,f6,t1,t2){
   K1 = (t1-1)/t1
   K2 = (t2-1)/t2
   
@@ -220,28 +220,28 @@ covmatrix_m = function(X,s,O){
 }
 
 # population SD
-SD  = function(X,Y,t1,t2,T1,T2,O,d){
+SD  = function(X,Y,t1,t2,O,d){
   f = f.fun(X,Y)
   # f1=f[1];f2=f[2];f3=f[3];f4=f[4];f5=f[5]
-  V = c((var(O,f[1]+d,f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2))/d,
-        (var(O,f[1],f[2]+d,f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2))/d,
-        (var(O,f[1],f[2],f[3]+d,f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2))/d,
-        (var(O,f[1],f[2],f[3],f[4]+d,f[5],f[6],f[7],f[8],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2))/d,
-        (var(O,f[1],f[2],f[3],f[4],f[5]+d,f[6],f[7],f[8],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2))/d,
-        (var(O,f[1],f[2],f[3],f[4],f[5],f[6]+d,f[7],f[8],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2))/d,
-        (var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7]+d,f[8],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2))/d,
-        (var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8]+d,t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2,T1,T2))/d,-1)
+  V = c((var(O,f[1]+d,f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
+        (var(O,f[1],f[2]+d,f[3],f[4],f[5],f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
+        (var(O,f[1],f[2],f[3]+d,f[4],f[5],f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
+        (var(O,f[1],f[2],f[3],f[4]+d,f[5],f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
+        (var(O,f[1],f[2],f[3],f[4],f[5]+d,f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
+        (var(O,f[1],f[2],f[3],f[4],f[5],f[6]+d,f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
+        (var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7]+d,f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
+        (var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8]+d,t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,-1)
   return(V)
 }
-SD_Pan  = function(X,Y,t1,t2,T1,T2,O,d){
+SD_Pan  = function(X,Y,t1,t2,O,d){
   f = f.fun(X,Y)
   # f1=f[1];f2=f[2];f3=f[3];f4=f[4];f5=f[5];f6=f[6];f7=f[8];f7=f[8]
-  V = c((var_Pan(O,f[1]+d,f[2],f[3],f[4],f[5],f[6],t1,t2,T1,T2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2,T1,T2))/d,
-        (var_Pan(O,f[1],f[2]+d,f[3],f[4],f[5],f[6],t1,t2,T1,T2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2,T1,T2))/d,
-        (var_Pan(O,f[1],f[2],f[3]+d,f[4],f[5],f[6],t1,t2,T1,T2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2,T1,T2))/d,
-        (var_Pan(O,f[1],f[2],f[3],f[4]+d,f[5],f[6],t1,t2,T1,T2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2,T1,T2))/d,
-        (var_Pan(O,f[1],f[2],f[3],f[4],f[5]+d,f[6],t1,t2,T1,T2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2,T1,T2))/d,
-        (var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6]+d,t1,t2,T1,T2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2,T1,T2))/d,-1)
+  V = c((var_Pan(O,f[1]+d,f[2],f[3],f[4],f[5],f[6],t1,t2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2))/d,
+        (var_Pan(O,f[1],f[2]+d,f[3],f[4],f[5],f[6],t1,t2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2))/d,
+        (var_Pan(O,f[1],f[2],f[3]+d,f[4],f[5],f[6],t1,t2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2))/d,
+        (var_Pan(O,f[1],f[2],f[3],f[4]+d,f[5],f[6],t1,t2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2))/d,
+        (var_Pan(O,f[1],f[2],f[3],f[4],f[5]+d,f[6],t1,t2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2))/d,
+        (var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6]+d,t1,t2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2))/d,-1)
   return(V)
 }
 SD_m  = function(X,t,O,d){
@@ -253,14 +253,14 @@ SD_m  = function(X,t,O,d){
 }
 
 # SE
-se = function(X,Y,t1,t2,T1,T2,O,E,d){
-  sd = SD(X,Y,t1,t2,T1,T2,O,d)
+se = function(X,Y,t1,t2,O,E,d){
+  sd = SD(X,Y,t1,t2,O,d)
   matrix = covmatrix(X,Y,E,O)
   SD = sqrt(abs(t(sd) %*% matrix %*% sd))
   return(SD)
 }
-se_Pan = function(X,Y,t1,t2,T1,T2,O,E_Pan,d){
-  sd_Pan = SD_Pan(X,Y,t1,t2,T1,T2,O,d)
+se_Pan = function(X,Y,t1,t2,O,E_Pan,d){
+  sd_Pan = SD_Pan(X,Y,t1,t2,O,d)
   matrix_Pan = covmatrix_Pan(X,Y,E_Pan,O)
   SD_Pan = sqrt(t(sd_Pan) %*% matrix_Pan %*% sd_Pan)
   return(SD_Pan)
@@ -300,7 +300,7 @@ cv = function(X,t){
 }
 
 # 整理
-wor.O = function(X,Y,T1,T2,t1,t2,Z1,Z2){
+wor.O = function(X,Y,t1,t2,Z1,Z2){
   # set sample
   X = rowSums(Z1)
   Y = rowSums(Z2)
@@ -331,8 +331,8 @@ wor = function(X,Y,T1,T2,t1,t2,Z1,Z2){
   
   
   # estimate
-  s = sapply(1:times, function(k) BB(X[,k],Y[,k],T1,T2,t1,t2))
-  s_Pan = sapply(1:times, function(k) Pan(X[,k],Y[,k],T1,T2,t1,t2))
+  s = sapply(1:times, function(k) BB(X[,k],Y[,k],t1,t2))
+  s_Pan = sapply(1:times, function(k) Pan(X[,k],Y[,k],t1,t2))
   o = sapply(1:times, function(k) obs(X[,k],Y[,k]))
   
   O = rbind(mean(o))
@@ -343,8 +343,8 @@ wor = function(X,Y,T1,T2,t1,t2,Z1,Z2){
   d = .01
   
   # SD
-  SD = mean(sapply(1:times, function(k) se(X[,k],Y[,k],t1,t2,T1,T2,O,E,d)))
-  SD_Pan = mean(sapply(1:times, function(k) se_Pan(X[,k],Y[,k],t1,t2,T1,T2,O,E_Pan,d)))
+  SD = mean(sapply(1:times, function(k) se(X[,k],Y[,k],t1,t2,O,E,d)))
+  SD_Pan = mean(sapply(1:times, function(k) se_Pan(X[,k],Y[,k],t1,t2,O,E_Pan,d)))
   
   # CI
   CI = CI_coverage(E,O,SD,s)
@@ -370,8 +370,8 @@ realdata = function(P_X,P_Y,t1,t2){
   Y = sapply(1:times, function(j) Sample(T2,t2,population2))
   
   # estimate
-  s = sapply(1:times, function(k) BB(X[,k],Y[,k],T1,T2,t1,t2))
-  s_Pan = sapply(1:times, function(k) Pan(X[,k],Y[,k],T1,T2,t1,t2))
+  s = sapply(1:times, function(k) BB(X[,k],Y[,k],t1,t2))
+  s_Pan = sapply(1:times, function(k) Pan(X[,k],Y[,k],t1,t2))
   o = sapply(1:times, function(k) obs(X[,k],Y[,k]))
   
   O = rbind(mean(o))
@@ -382,8 +382,8 @@ realdata = function(P_X,P_Y,t1,t2){
   d = .01
   
   # SD
-  SD = mean(sapply(1:times, function(k) se(X[,k],Y[,k],t1,t2,T1,T2,O,E,d)))
-  SD_Pan = mean(sapply(1:times, function(k) se_Pan(X[,k],Y[,k],t1,t2,T1,T2,O,E_Pan,d)))
+  SD = mean(sapply(1:times, function(k) se(X[,k],Y[,k],t1,t2,O,E,d)))
+  SD_Pan = mean(sapply(1:times, function(k) se_Pan(X[,k],Y[,k],t1,t2,O,E_Pan,d)))
   
   # CI
   CI = CI_coverage(E,O,SD,s)
@@ -411,15 +411,15 @@ realdata1 = function(P_X,P_Y){
   CvY = cv(Y,t2)
   
   # estimate
-  E =  BB(X,Y,T1,T2,t1,t2)
-  E_Pan = Pan(X,Y,T1,T2,t1,t2)
+  E =  BB(X,Y,t1,t2)
+  E_Pan = Pan(X,Y,t1,t2)
   O = obs(X,Y)
   
   d = .01
   
   # SD
-  SD_ = se(X,Y,t1,t2,T1,T2,O,E,d)
-  SD_Pan = se_Pan(X,Y,t1,t2,T1,T2,O,E_Pan,d)
+  SD_ = se(X,Y,t1,t2,O,E,d)
+  SD_Pan = se_Pan(X,Y,t1,t2,O,E_Pan,d)
   
   # log CI
   R = as.numeric(exp(1.96*( log(1+SD_^2/max(0.1^10,(E-O)^2)))^(1/2)))
@@ -588,31 +588,20 @@ cbind(c(mean(rowSums(Z1.2)[c(1:S12,(S1+1):S)]/T2),mean(rowSums(Z2.2)[c(1:S12,(S1
 ################################### test #######################################
 # TT = T1 = T2
 # t1 = t2 = TT
-a = Sys.time()
-set.seed(123)
+# a = Sys.time()
 # set.seed(123)
-round(rbind(wor.O(X,Y,T1,T2,t1,t2,Z1.1,Z2.1),
-            wor.O(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-            wor.O(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-            wor.O(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-# round(rbind(wor(X,Y,T1,T2,t1,t2,p1.1,p1.2),
-#             wor(X,Y,T1,T2,t1,t2,p1.1,p2.2),
-#             wor(X,Y,T1,T2,t1,t2,p1.1,p3.2),
-#             wor(X,Y,T1,T2,t1,t2,p1.1,p4.2),
-#             wor(X,Y,T1,T2,t1,t2,p2.1,p2.2),
-#             wor(X,Y,T1,T2,t1,t2,p2.1,p3.2),
-#             wor(X,Y,T1,T2,t1,t2,p2.1,p4.2),
-#             wor(X,Y,T1,T2,t1,t2,p3.1,p3.2),
-#             wor(X,Y,T1,T2,t1,t2,p3.1,p4.2),
-#             wor(X,Y,T1,T2,t1,t2,p4.1,p4.2)),2)
-# wor(X,Y,T1,T2,t1,t2,Z1.1,Z1.2)
-
-t1 = 0.1*T1
-t2 = 0.1*T2
-round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z2.1),2)
-round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),2)
-round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z4.1),2)
-Sys.time()-a
+# # set.seed(123)
+# round(rbind(wor.O(X,Y,t1,t2,Z1.1,Z2.1),
+#             wor.O(X,Y,t1,t2,Z2.1,Z2.2),
+#             wor.O(X,Y,t1,t2,Z2.1,Z3.1),
+#             wor.O(X,Y,t1,t2,Z3.1,Z4.2)),2)
+# 
+# t1 = 0.1*T1
+# t2 = 0.1*T2
+# round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z2.1),2)
+# round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),2)
+# round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z4.1),2)
+# Sys.time()-a
 ################################ 估計 ########################################
 a = Sys.time()
 set.seed(123)
@@ -1011,11 +1000,10 @@ S = round(c(S1,S2,S3,S4),1);S
 
 # one community richness SD
 a = .5
-Sd1 = se_m(rowSums(P_1),T1,S1_O,S1,.01)
-Sd2 = se_m(rowSums(P_2),T2,S2_O,S2,.01)
-Sd3 = se_m(rowSums(P_3),T3,S3_O,S3,.01)
-Sd4 = se_m(rowSums(P_4),T4,S4_O,S4,.01)
-Sd = round(c(Sd1,Sd2,Sd3,Sd4),1);Sd
+Sd = round(c(se_m(rowSums(P_1),T1,S1_O,S1,.01),
+             se_m(rowSums(P_2),T2,S2_O,S2,.01),
+             se_m(rowSums(P_3),T3,S3_O,S3,.01),
+             se_m(rowSums(P_4),T4,S4_O,S4,.01)),2)
 cbind(S,Sd)
 
 S12 = r$E[1];S13 = r$E[3];S14 = r$E[5];S23 = r$E[7];S24 = r$E[9];S34 = r$E[11]
@@ -1028,8 +1016,8 @@ S.4 = S2+S3-S23
 S.5 = S2+S4-S24
 S.6 = S3+S4-S34
 
-round(c(S.1,S.2,S.3,S.4,S.5,S.6),1)
 round(c(S.1_O,S.2_O,S.3_O,S.4_O,S.5_O,S.6_O),1)
+round(c(S.1,S.2,S.3,S.4,S.5,S.6),1)
 
 # beta diversity
 B1 = 1 - (S12/S.1)
@@ -1040,8 +1028,8 @@ B5 = 1 - (S24/S.5)
 B6 = 1 - (S34/S.6)
 B = c(B1,B2,B3,B4,B5,B6)
 
-round(B,2)
 round(B_O,2)
+round(B,2)
 
 ## beta diversity plot
 # non estimate
