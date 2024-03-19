@@ -940,16 +940,10 @@ mean(p1);mean(p2);mean(p3);mean(p4)
 sd(p1)/mean(p1);sd(p2)/mean(p2);sd(p3)/mean(p3);sd(p4)/mean(p4)
 
 # T
-T1 = ncol(P_1)
-T2 = ncol(P_2)
-T3 = ncol(P_3)
-T4 = ncol(P_4)
+T1 = ncol(P_1);T2 = ncol(P_2);T3 = ncol(P_3);T4 = ncol(P_4)
 
 # Q_i
-f(rowSums(P_1))
-f(rowSums(P_2))
-f(rowSums(P_3))
-f(rowSums(P_4))
+f(rowSums(P_1));f(rowSums(P_2));f(rowSums(P_3));f(rowSums(P_4))
 
 ## non estimate
 # richness
@@ -966,7 +960,35 @@ S23_O = length(which(rowSums(P_2)*rowSums(P_3)>0))
 S24_O = length(which(rowSums(P_2)*rowSums(P_4)>0))
 S34_O = length(which(rowSums(P_3)*rowSums(P_4)>0))
 
-# species richness of two community 
+
+## estimate
+set.seed(123)
+r = data.frame(round(rbind(realdata1(P_1,P_2),realdata1(P_1,P_3),realdata1(P_1,P_4),
+                           realdata1(P_2,P_3),realdata1(P_2,P_4),realdata1(P_3,P_4)),2));r
+write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
+S12 = r$E[1];S13 = r$E[3];S14 = r$E[5];S23 = r$E[7];S24 = r$E[9];S34 = r$E[11]
+
+
+## one community richness
+# estimate
+S1 = more(rowSums(P_1),T1)
+S2 = more(rowSums(P_2),T2)
+S3 = more(rowSums(P_3),T3)
+S4 = more(rowSums(P_4),T4)
+S = round(c(S1,S2,S3,S4),1);S
+
+# SD
+a = .5
+Sd = round(c(se_m(rowSums(P_1),T1,S1_O,S1,.01),
+             se_m(rowSums(P_2),T2,S2_O,S2,.01),
+             se_m(rowSums(P_3),T3,S3_O,S3,.01),
+             se_m(rowSums(P_4),T4,S4_O,S4,.01)),2)
+cbind(S,Sd)
+
+
+
+## species richness of two community
+# obs
 S.1_O = S1_O+S2_O-S12_O
 S.2_O = S1_O+S3_O-S13_O
 S.3_O = S1_O+S4_O-S14_O
@@ -974,8 +996,28 @@ S.4_O = S2_O+S3_O-S23_O
 S.5_O = S2_O+S4_O-S24_O
 S.6_O = S3_O+S4_O-S34_O
 
+# estimate 1
+S.1 = S1+S2-S12
+S.2 = S1+S3-S13
+S.3 = S1+S4-S14
+S.4 = S2+S3-S23
+S.5 = S2+S4-S24
+S.6 = S3+S4-S34
 
-# beta diversity
+# estimate 2
+S..1 = more((rowSums(P_1)+rowSums(P_2)),T1+T2)
+S..2 = more((rowSums(P_1)+rowSums(P_3)),T1+T3)
+S..3 = more((rowSums(P_1)+rowSums(P_4)),T1+T4)
+S..4 = more((rowSums(P_2)+rowSums(P_3)),T2+T3)
+S..5 = more((rowSums(P_2)+rowSums(P_4)),T2+T4)
+S..6 = more((rowSums(P_3)+rowSums(P_4)),T2+T4)
+
+round(c(S.1,S.2,S.3,S.4,S.5,S.6),1)
+round(c(S..1,S..2,S..3,S..4,S..5,S..6),1)
+round(c(S.1_O,S.2_O,S.3_O,S.4_O,S.5_O,S.6_O),1)
+
+## beta diversity
+# obs
 B1_O = 1 - (S12_O/S.1_O)
 B2_O = 1 - (S13_O/S.2_O)
 B3_O = 1 - (S14_O/S.3_O)
@@ -984,42 +1026,7 @@ B5_O = 1 - (S24_O/S.5_O)
 B6_O = 1 - (S34_O/S.6_O)
 B_O = c(B1_O,B2_O,B3_O,B4_O,B5_O,B6_O)
 
-
-## estimate
-set.seed(123)
-r = data.frame(round(rbind(realdata1(P_1,P_2),realdata1(P_1,P_3),realdata1(P_1,P_4),
-                           realdata1(P_2,P_3),realdata1(P_2,P_4),realdata1(P_3,P_4)),2));r
-write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
-
-# one community richness
-S1 = more(rowSums(P_1),T1)
-S2 = more(rowSums(P_2),T2)
-S3 = more(rowSums(P_3),T3)
-S4 = more(rowSums(P_4),T4)
-S = round(c(S1,S2,S3,S4),1);S
-
-# one community richness SD
-a = .5
-Sd = round(c(se_m(rowSums(P_1),T1,S1_O,S1,.01),
-             se_m(rowSums(P_2),T2,S2_O,S2,.01),
-             se_m(rowSums(P_3),T3,S3_O,S3,.01),
-             se_m(rowSums(P_4),T4,S4_O,S4,.01)),2)
-cbind(S,Sd)
-
-S12 = r$E[1];S13 = r$E[3];S14 = r$E[5];S23 = r$E[7];S24 = r$E[9];S34 = r$E[11]
-
-# species richness of two community 
-S.1 = S1+S2-S12
-S.2 = S1+S3-S13
-S.3 = S1+S4-S14
-S.4 = S2+S3-S23
-S.5 = S2+S4-S24
-S.6 = S3+S4-S34
-
-round(c(S.1_O,S.2_O,S.3_O,S.4_O,S.5_O,S.6_O),1)
-round(c(S.1,S.2,S.3,S.4,S.5,S.6),1)
-
-# beta diversity
+# estimate 1
 B1 = 1 - (S12/S.1)
 B2 = 1 - (S13/S.2)
 B3 = 1 - (S14/S.3)
@@ -1028,8 +1035,18 @@ B5 = 1 - (S24/S.5)
 B6 = 1 - (S34/S.6)
 B = c(B1,B2,B3,B4,B5,B6)
 
-round(B_O,2)
+# estimate 2
+B.1 = 1 - (S12/S..1)
+B.2 = 1 - (S13/S..2)
+B.3 = 1 - (S14/S..3)
+B.4 = 1 - (S23/S..4)
+B.5 = 1 - (S24/S..5)
+B.6 = 1 - (S34/S..6)
+B. = c(B.1,B.2,B.3,B.4,B.5,B.6)
+
 round(B,2)
+round(B.,2)
+round(B_O,2)
 
 ## beta diversity plot
 # non estimate
@@ -1054,7 +1071,6 @@ jaccard_dist = as.dist(j);jaccard_dist
 # Hierarchical clustering based on Jaccard distance
 hc = hclust(jaccard_dist, method = "average")
 
-# Plot the dendrogram
 # Plot the dendrogram
 par(mfrow=c(1,2))
 plot(hc_O, xlab = "Samples", ylab = "Distance", main = "non-Estimate")
