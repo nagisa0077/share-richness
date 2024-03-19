@@ -118,7 +118,7 @@ more = function(X,t){
   ans = if(f[2]==0){s.obs +
       K * ((f[1]*(f[1]-1))/2) * (2-k)
   }else{s.obs +
-      K * (f[1]^2/(2*f[4])) * (2-k)
+      K * (f[1]^2/(2*f[2])) * (2-k)
   }
   return(ans)
 }
@@ -159,8 +159,20 @@ var_Pan = function(s.obs,f1,f2,f3,f4,f5,f6,t1,t2,T1,T2){
   }
   return(ans)
 }
+var_m = function(s.obs,f1,f2,f3,t){
+  K = (t-1)/t
+  
+  k = max(1/2,min(1,2*f2^2/(3*max(1,f1)*max(1,f3))))
+  
+  ans = if(f2==0){s.obs +
+      K * ((f1*(f2-1))/2) * (2-k)
+  }else{s.obs +
+      K * (f1^2/(2*f2)) * (2-k)
+  }
+  return(ans)
+}
 
-## 原版
+# Covmatrix
 covmatrix = function(X,Y,s,O){
   f = c(f.fun(X,Y)) #用Sobs去建立covarance matrix
   f = c(f[1:8],s-O)
@@ -180,6 +192,21 @@ covmatrix_Pan = function(X,Y,s,O){
   f = c(f.fun(X,Y)) #用Sobs去建立covarance matrix
   f = c(f[1:6],s-O)
   cov_matrix = matrix(0, nrow = 7, ncol = 7)
+  for(i in 1:length(f)){
+    for(j in 1:length(f)){
+      if(i == j){
+        cov_matrix[i,i] = f[i]*(1-(f[i]/s))
+      }else{
+        cov_matrix[i,j] = -f[i]*(f[j]/s)
+      }
+    }
+  }
+  return(cov_matrix)
+}
+covmatrix_m = function(X,s,O){
+  f = c(f(X)) #用Sobs去建立covarance matrix
+  f = c(f[1:3],s-O)
+  cov_matrix = matrix(0, nrow = 4, ncol = 4)
   for(i in 1:length(f)){
     for(j in 1:length(f)){
       if(i == j){
@@ -217,6 +244,13 @@ SD_Pan  = function(X,Y,t1,t2,T1,T2,O,d){
         (var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6]+d,t1,t2,T1,T2)-var_Pan(O,f[1],f[2],f[3],f[4],f[5],f[6],t1,t2,T1,T2))/d,-1)
   return(V)
 }
+SD_m  = function(X,t,O,d){
+  f = f(X)
+  V = c((var_m(O,f[1]+d,f[2],f[3],t)-var_m(O,f[1],f[2],f[3],t))/d,
+        (var_m(O,f[1],f[2]+d,f[3],t)-var_m(O,f[1],f[2],f[3],t))/d,
+        (var_m(O,f[1],f[2],f[3]+d,t)-var_m(O,f[1],f[2],f[3],t))/d,-1)
+  return(V)
+}
 
 # SE
 se = function(X,Y,t1,t2,T1,T2,O,E,d){
@@ -230,6 +264,12 @@ se_Pan = function(X,Y,t1,t2,T1,T2,O,E_Pan,d){
   matrix_Pan = covmatrix_Pan(X,Y,E_Pan,O)
   SD_Pan = sqrt(t(sd_Pan) %*% matrix_Pan %*% sd_Pan)
   return(SD_Pan)
+}
+se_m = function(X,t,O,E,d){
+  sd = SD_m(X,t,O,d)
+  matrix = covmatrix_m(X,E,O)
+  SD = sqrt(abs(t(sd) %*% matrix %*% sd))
+  return(SD)
 }
 
 # 95 % CI
@@ -402,6 +442,9 @@ times = 1000
 S1 = 400
 S2 = 400
 
+# S1 = 600
+# S2 = 600
+
 # S1 = 400
 # S2 = 600
 
@@ -409,7 +452,8 @@ S12 = 300
 S = S1 + S2 - S12
 S1.only = S1 - S12 ; S2.only = S2 - S12
 
-T1 = T2 = 100
+T1 = 100
+T2 = 100
 
 ################################ 物種分配 ######################################
 r.s.12 = c(1:S12)
@@ -511,6 +555,8 @@ p4.2 = c(p4.2[1:S12],rep(0,S1.only),p4.2[(S12+1):S2])
 
 # p5.1 = c(p5.1,rep(0,S1.only))
 # p5.2 = c(p5.2[1:S12],rep(0,S2.only),p4.2[(S12+1):S2])
+
+############################### 機率排列 #######################################
 # 出線機率高的作為共同種，特有種設定
 # p2.1=sort(p2.1,T);p3.1=sort(p3.1,T);p4.1=sort(p4.1,T);
 # p2.2=sort(p2.2,T);p3.2=sort(p3.2,T);p4.2=sort(p4.2,T);
@@ -540,8 +586,8 @@ cbind(c(mean(rowSums(Z1.2)[c(1:S12,(S1+1):S)]/T2),mean(rowSums(Z2.2)[c(1:S12,(S1
         sd(rowSums(Z3.2)[c(1:S12,(S1+1):S)]/T2)/mean(rowSums(Z3.2)[c(1:S12,(S1+1):S)]/T2),sd(rowSums(Z4.2)[c(1:S12,(S1+1):S)]/T2)/mean(rowSums(Z4.2)[c(1:S12,(S1+1):S)]/T2)))
 
 ################################### test #######################################
-TT = T1 = T2
-t1 = t2 = TT
+# TT = T1 = T2
+# t1 = t2 = TT
 a = Sys.time()
 set.seed(123)
 # set.seed(123)
@@ -643,10 +689,10 @@ csv = rbind(list0[I,],list0[I+a,],list0[I+a*2,],list0[I+a*3,],
             list0[II,],list0[II+a,],list0[II+a*2,],list0[II+a*3,],
             list0[III,],list0[III+a,],list0[III+a*2,],list0[III+a*3,],
             list0[IV,],list0[IV+a,],list0[IV+a*2,],list0[IV+a*3,])
-write.csv(csv[,c(1:7)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\without share.csv")
+write.csv(csv[,c(1:7)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\table.csv")
 
-A = seq(from = 1, to = 31, 2)
-write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\without share.csv")
+# A = seq(from = 1, to = 31, 2)
+# write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\table.csv")
 
 rm(I,II,III,IV,list0,A,csv);gc()
 ################################## plot ########################################
@@ -899,17 +945,16 @@ P_2 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\dat
 P_3 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data3.csv"))
 P_4 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data4.csv"))
 P_1 = P_1[,-1];P_2 = P_2[,-1];P_3 = P_3[,-1];P_4 = P_4[,-1]
-
 p1 = rowSums(P_1)/ncol(P_1);p2 = rowSums(P_2)/ncol(P_2)
 p3 = rowSums(P_3)/ncol(P_3);p4 = rowSums(P_4)/ncol(P_4)
 mean(p1);mean(p2);mean(p3);mean(p4)
 sd(p1)/mean(p1);sd(p2)/mean(p2);sd(p3)/mean(p3);sd(p4)/mean(p4)
 
 # T
-t1 = ncol(P_1)
-t2 = ncol(P_2)
-t3 = ncol(P_3)
-t4 = ncol(P_4)
+T1 = ncol(P_1)
+T2 = ncol(P_2)
+T3 = ncol(P_3)
+T4 = ncol(P_4)
 
 # Q_i
 f(rowSums(P_1))
@@ -917,38 +962,61 @@ f(rowSums(P_2))
 f(rowSums(P_3))
 f(rowSums(P_4))
 
+## non estimate
 # richness
-length(which(rowSums(P_1)>0))
-length(which(rowSums(P_2)>0))
-length(which(rowSums(P_3)>0))
-length(which(rowSums(P_4)>0))
+S1_O = length(which(rowSums(P_1)>0))
+S2_O = length(which(rowSums(P_2)>0))
+S3_O = length(which(rowSums(P_3)>0))
+S4_O = length(which(rowSums(P_4)>0))
 
 # share
-length(which(rowSums(P_1)*rowSums(P_2)>0))
-length(which(rowSums(P_1)*rowSums(P_3)>0))
-length(which(rowSums(P_1)*rowSums(P_4)>0))
-length(which(rowSums(P_2)*rowSums(P_3)>0))
-length(which(rowSums(P_2)*rowSums(P_4)>0))
-length(which(rowSums(P_3)*rowSums(P_4)>0))
+S12_O = length(which(rowSums(P_1)*rowSums(P_2)>0))
+S13_O = length(which(rowSums(P_1)*rowSums(P_3)>0))
+S14_O = length(which(rowSums(P_1)*rowSums(P_4)>0))
+S23_O = length(which(rowSums(P_2)*rowSums(P_3)>0))
+S24_O = length(which(rowSums(P_2)*rowSums(P_4)>0))
+S34_O = length(which(rowSums(P_3)*rowSums(P_4)>0))
 
-# species richness
-S1 = more(rowSums(P_1),t1)
-S2 = more(rowSums(P_2),t2)
-S3 = more(rowSums(P_3),t3)
-S4 = more(rowSums(P_4),t4)
-round(c(S1,S2,S3,S4),1)
+# species richness of two community 
+S.1_O = S1_O+S2_O-S12_O
+S.2_O = S1_O+S3_O-S13_O
+S.3_O = S1_O+S4_O-S14_O
+S.4_O = S2_O+S3_O-S23_O
+S.5_O = S2_O+S4_O-S24_O
+S.6_O = S3_O+S4_O-S34_O
 
-# sample coverage
-1 - (sum(rowSums(P_1)==1)/sum(rowSums(P_1)))
-1 - (sum(rowSums(P_2)==1)/sum(rowSums(P_2)))
-1 - (sum(rowSums(P_3)==1)/sum(rowSums(P_3)))
-1 - (sum(rowSums(P_4)==1)/sum(rowSums(P_4)))
 
-# estimate
+# beta diversity
+B1_O = 1 - (S12_O/S.1_O)
+B2_O = 1 - (S13_O/S.2_O)
+B3_O = 1 - (S14_O/S.3_O)
+B4_O = 1 - (S23_O/S.4_O)
+B5_O = 1 - (S24_O/S.5_O)
+B6_O = 1 - (S34_O/S.6_O)
+B_O = c(B1_O,B2_O,B3_O,B4_O,B5_O,B6_O)
+
+
+## estimate
 set.seed(123)
 r = data.frame(round(rbind(realdata1(P_1,P_2),realdata1(P_1,P_3),realdata1(P_1,P_4),
                            realdata1(P_2,P_3),realdata1(P_2,P_4),realdata1(P_3,P_4)),2));r
 write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
+
+# one community richness
+S1 = more(rowSums(P_1),T1)
+S2 = more(rowSums(P_2),T2)
+S3 = more(rowSums(P_3),T3)
+S4 = more(rowSums(P_4),T4)
+S = round(c(S1,S2,S3,S4),1);S
+
+# one community richness SD
+a = .5
+Sd1 = se_m(rowSums(P_1),T1,S1_O,S1,.01)
+Sd2 = se_m(rowSums(P_2),T2,S2_O,S2,.01)
+Sd3 = se_m(rowSums(P_3),T3,S3_O,S3,.01)
+Sd4 = se_m(rowSums(P_4),T4,S4_O,S4,.01)
+Sd = round(c(Sd1,Sd2,Sd3,Sd4),1);Sd
+cbind(S,Sd)
 
 S12 = r$E[1];S13 = r$E[3];S14 = r$E[5];S23 = r$E[7];S24 = r$E[9];S34 = r$E[11]
 
@@ -959,7 +1027,9 @@ S.3 = S1+S4-S14
 S.4 = S2+S3-S23
 S.5 = S2+S4-S24
 S.6 = S3+S4-S34
+
 round(c(S.1,S.2,S.3,S.4,S.5,S.6),1)
+round(c(S.1_O,S.2_O,S.3_O,S.4_O,S.5_O,S.6_O),1)
 
 # beta diversity
 B1 = 1 - (S12/S.1)
@@ -969,10 +1039,23 @@ B4 = 1 - (S23/S.4)
 B5 = 1 - (S24/S.5)
 B6 = 1 - (S34/S.6)
 B = c(B1,B2,B3,B4,B5,B6)
-round(B,2)
 
-# beta diversity plot
-# beta diversity plot
+round(B,2)
+round(B_O,2)
+
+## beta diversity plot
+# non estimate
+j_O = matrix(c(NA,B_O[1:3],
+               B_O[1],NA,B_O[4:5],
+               B_O[2],B_O[4],NA,B_O[6],
+               B_O[3],B_O[5],B_O[6],NA),4)
+row.names(j_O) = colnames(j_O) = c('foothill','lower conifer','upper conifer','high country')
+jaccard_dist_O = as.dist(j_O);jaccard_dist_O
+
+# Hierarchical clustering based on Jaccard distance
+hc_O = hclust(jaccard_dist_O, method = "average")
+
+# estumate
 j = matrix(c(NA,B[1:3],
              B[1],NA,B[4:5],
              B[2],B[4],NA,B[6],
@@ -984,5 +1067,8 @@ jaccard_dist = as.dist(j);jaccard_dist
 hc = hclust(jaccard_dist, method = "average")
 
 # Plot the dendrogram
-plot(hc, xlab = "Samples", ylab = "Distance")
+# Plot the dendrogram
+par(mfrow=c(1,2))
+plot(hc_O, xlab = "Samples", ylab = "Distance", main = "non-Estimate")
+plot(hc, xlab = "Samples", ylab = "Distance", main = "Estimate")
 

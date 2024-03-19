@@ -297,7 +297,7 @@ var_m = function(s.obs,f1,f2,t,TT){
   return(ans)
 }
 
-## 原版
+# Covmatrix
 covmatrix = function(X,Y,s,O){
   f = c(f.fun(X,Y)) #用Sobs去建立covarance matrix
   f = c(f[1:5],s-O)
@@ -441,7 +441,6 @@ se3 = function(X,Y,t1,t2,T1,T2,O,E3,d){
   SD = sqrt(abs(t(sd) %*% matrix %*% sd))
   return(SD)
 }
-
 se_m = function(X,t,TT,O,E,d){
   sd = SD_m(X,t,TT,O,d)
   matrix = covmatrix_m(X,E,O)
@@ -661,11 +660,14 @@ realdata1 = function(P_X,P_Y,a){
 ################################## 參數 ########################################
 times = 1000
 
-# S1 = 400
-# S2 = 400
-
 S1 = 400
-S2 = 600
+S2 = 400
+
+# S1 = 600
+# S2 = 600
+
+# S1 = 400
+# S2 = 600
 
 S12 = 300
 S = S1 + S2 - S12
@@ -891,11 +893,11 @@ csv = rbind(list0[I,],list0[I+a,],list0[I+a*2,],list0[I+a*3,],
             list0[II,],list0[II+a,],list0[II+a*2,],list0[II+a*3,],
             list0[III,],list0[III+a,],list0[III+a*2,],list0[III+a*3,],
             list0[IV,],list0[IV+a,],list0[IV+a*2,],list0[IV+a*3,])
-write.csv(csv[,c(1:7)], "D:\\nagisa\\NAGISA\\學校\\碩班\\研究\\00 code\\table\\without share.csv")
+write.csv(csv[,c(1:7)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\table.csv")
 
 
-A = seq(from = 1, to = 61, 4)
-write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\without share.csv")
+# A = seq(from = 1, to = 61, 4)
+# write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\table.csv")
 
 rm(I,II,III,IV,list0,csv);gc()
 ################################## plot ########################################
