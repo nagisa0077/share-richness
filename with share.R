@@ -701,7 +701,7 @@ IV = III + 1
 # 圖說才會在正確的位置
 # estimate I
 par(mfrow=c(1,2),pty="s")
-plot(N[I,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "I vs III")
+plot(N[I,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "I vs III")
 axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
 points(N[I,]$E,lwd=5,pch=16,cex=1.2,col="red2")
 lines(N1[I,]$E,lwd=3,lty=2,col="blue")
@@ -711,21 +711,21 @@ points(N[I,]$V1,lwd=3,pch=4,col="black")
 abline(h=S12,lwd=3,col="gray")
 legend("bottomright",legend  = c("BB","Pan","Obs"),
        col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE,cex = .9)
+       pch=c(16,17,4),merge = TRUE)
 
 # RMSE I
-plot(N[I,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "I vs III")
+plot(N[I,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample size",xaxt="n",main = "I vs III")
 axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
 points(N[I,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
 lines(N1[I,]$RMSE,lwd=3,lty=2,col="blue")
 points(N1[I,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
 legend("topright",legend  = c("BB","Pan"),
        col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE,cex = .9)
+       pch=c(16,17),merge = TRUE)
 
 
 # estimate II
-plot(N[II,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "II vs II")
+plot(N[II,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "II vs II")
 axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
 points(N[II,]$E,lwd=5,pch=16,cex=1.2,col="red2")
 lines(N1[II,]$E,lwd=3,lty=2,col="blue")
@@ -735,21 +735,21 @@ points(N[II,]$V1,lwd=3,pch=4,col="black")
 abline(h=S12,lwd=3,col="gray")
 legend("bottomright",legend  = c("BB","Pan","Obs"),
        col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE,cex = .9)
+       pch=c(16,17,4),merge = TRUE)
 
 # RMSE II
-plot(N[II,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "II vs II")
+plot(N[II,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample size",xaxt="n",main = "II vs II")
 axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
 points(N[II,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
 lines(N1[II,]$RMSE,lwd=3,lty=2,col="blue")
 points(N1[II,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
 legend("topright",legend  = c("BB","Pan"),
        col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE,cex = .9)
+       pch=c(16,17),merge = TRUE)
 
 
 # estimate III
-plot(N[III,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main ="II vs III")
+plot(N[III,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample size",xaxt="n",main ="II vs III")
 axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
 points(N[III,]$E,lwd=5,pch=16,cex=1.2,col="red2")
 lines(N1[III,]$E,lwd=3,lty=2,col="blue")
@@ -759,21 +759,21 @@ points(N[III,]$V1,lwd=3,pch=4,col="black")
 abline(h=S12,lwd=3,col="gray")
 legend("bottomright",legend  = c("BB","Pan","Obs"),
        col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE,cex = .9)
+       pch=c(16,17,4),merge = TRUE)
 
 # RMSE III
-plot(N[III,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample fraction",xaxt="n",main ="II vs III")
+plot(N[III,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample size",xaxt="n",main ="II vs III")
 axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
 points(N[III,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
 lines(N1[III,]$RMSE,lwd=3,lty=2,col="blue")
 points(N1[III,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
 legend("topright",legend  = c("BB","Pan"),
        col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE,cex = .9)
+       pch=c(16,17),merge = TRUE)
 
 
 # estimate IV
-plot(N[IV,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "III vs VI")
+plot(N[IV,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "III vs VI")
 axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
 points(N[IV,]$E,lwd=5,pch=16,cex=1.2,col="red2")
 lines(N1[IV,]$E,lwd=3,lty=2,col="blue")
@@ -783,17 +783,17 @@ points(N[IV,]$V1,lwd=3,pch=4,col="black")
 abline(h=S12,lwd=3,col="gray")
 legend("bottomright",legend  = c("BB","Pan","Obs"),
        col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE,cex = .9)
+       pch=c(16,17,4),merge = TRUE)
 
 # RMSE IV
-plot(N[IV,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,110),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "III vs VI")
+plot(N[IV,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,110),ylab="RMSE",xlab="Sample size",xaxt="n",main = "III vs VI")
 axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
 points(N[IV,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
 lines(N1[IV,]$RMSE,lwd=3,lty=2,col="blue")
 points(N1[IV,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
 legend("topright",legend  = c("BB","Pan"),
        col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE,cex = .9)
+       pch=c(16,17),merge = TRUE)
 
 ############################ real data #########################################
 ##### 火災後鳥類 #####
@@ -842,7 +842,7 @@ B = A + 1
 
 par(mfrow=c(1,3),pty="s")
 r=r1; O=O1
-plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(20,60),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "I vs II")
+plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(20,60),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "I vs II")
 axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
 points(r[A,]$E,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$E,lwd=3,lty=2,col="blue")
@@ -854,7 +854,7 @@ legend("bottomright",legend  = c("BB","Pan","Obs"),
        col= c('red','blue','black'),lty = c(2,2,2),
        pch=c(16,17,4),merge = TRUE)
 
-plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,20),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "I vs II")
+plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,20),ylab="RMSE",xlab="Sample size",xaxt="n",main = "I vs II")
 axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
 points(r[A,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$RMSE,lwd=3,lty=2,col="blue")
@@ -862,7 +862,7 @@ points(r[B,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
 legend("topright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
        pch=c(16,17),merge = TRUE)
 
-plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample fraction",ylim = c(0.6,.9),xaxt="n",main = "I vs II")
+plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample size",ylim = c(0.6,.9),xaxt="n",main = "I vs II")
 axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
 points(r[A,]$CI,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$CI,lwd=3,lty=2,col="blue")
@@ -871,7 +871,7 @@ legend("bottomright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
        pch=c(16,17),merge = TRUE)
 
 r=r2; O=O2
-plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(20,55),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "I vs III")
+plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(20,55),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "I vs III")
 axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
 points(r[A,]$E,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$E,lwd=3,lty=2,col="blue")
@@ -883,7 +883,7 @@ legend("bottomright",legend  = c("BB","Pan","Obs"),
        col= c('red','blue','black'),lty = c(2,2,2),
        pch=c(16,17,4),merge = TRUE)
 
-plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,20),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "I vs III")
+plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,20),ylab="RMSE",xlab="Sample size",xaxt="n",main = "I vs III")
 axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
 points(r[A,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$RMSE,lwd=3,lty=2,col="blue")
@@ -891,7 +891,7 @@ points(r[B,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
 legend("topright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
        pch=c(16,17),merge = TRUE)
 
-plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample fraction",ylim = c(0.6,.9),xaxt="n",main = "I vs III")
+plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample size",ylim = c(0.6,.9),xaxt="n",main = "I vs III")
 axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
 points(r[A,]$CI,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$CI,lwd=3,lty=2,col="blue")
@@ -900,7 +900,7 @@ legend("bottomright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
        pch=c(16,17),merge = TRUE)
 
 r=r3; O=O3
-plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(20,60),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "II vs III")
+plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(20,60),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "II vs III")
 axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
 points(r[A,]$E,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$E,lwd=3,lty=2,col="blue")
@@ -912,7 +912,7 @@ legend("bottomright",legend  = c("BB","Pan","Obs"),
        col= c('red','blue','black'),lty = c(2,2,2),
        pch=c(16,17,4),merge = TRUE)
 
-plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,20),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "II vs III")
+plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,20),ylab="RMSE",xlab="Sample size",xaxt="n",main = "II vs III")
 axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
 points(r[A,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$RMSE,lwd=3,lty=2,col="blue")
@@ -920,7 +920,7 @@ points(r[B,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
 legend("topright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
        pch=c(16,17),merge = TRUE)
 
-plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample fraction",ylim = c(0.6,.9),xaxt="n",main = "II vs III")
+plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample size",ylim = c(0.6,.9),xaxt="n",main = "II vs III")
 axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
 points(r[A,]$CI,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$CI,lwd=3,lty=2,col="blue")

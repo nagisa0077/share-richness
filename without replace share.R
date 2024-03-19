@@ -896,8 +896,8 @@ csv = rbind(list0[I,],list0[I+a,],list0[I+a*2,],list0[I+a*3,],
 write.csv(csv[,c(1:7)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\table.csv")
 
 
-# A = seq(from = 1, to = 61, 4)
-# write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\table.csv")
+A = seq(from = 1, to = 61, 4)
+write.csv(csv[A,c(8:11)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\table.csv")
 
 rm(I,II,III,IV,list0,csv);gc()
 ################################## plot ########################################
@@ -935,7 +935,7 @@ points(N[I,]$V1,lwd=3,pch=4,col="black")
 abline(h=S12,lwd=3,col="gray")
 legend("bottomright",legend  = c("wBB1","wBB2","wChao2",'BB',"Obs"),
        col= c('red','blue','darkorchid','green','black'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE,cex = .9)
+       pch=c(16,17,18,15,4),merge = TRUE)
 
 # RMSE I
 plot(N[I,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "I vs III")
@@ -949,7 +949,7 @@ lines(N3[I,]$RMSE,lwd=3,lty=2,col="green")
 points(N3[I,]$RMSE,lwd=5,pch=15,cex=1.2,col="green")
 legend("topright",legend  = c("wBB1","wBB2","wChao2",'BB'),
        col= c('red','blue','darkorchid','green'),lty = c(2,2,2,2),
-       pch=c(16,17,18,15),merge = TRUE,cex = .9)
+       pch=c(16,17,18,15),merge = TRUE)
 
 
 # estimate II
@@ -967,7 +967,7 @@ points(N[II,]$V1,lwd=3,pch=4,col="black")
 abline(h=S12,lwd=3,col="gray")
 legend("bottomright",legend  = c("wBB1","wBB2","wChao2",'BB',"Obs"),
        col= c('red','blue','darkorchid','green','black'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE,cex = .9)
+       pch=c(16,17,18,15,4),merge = TRUE)
 
 # RMSE II
 plot(N[II,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,110),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "II vs II")
@@ -981,7 +981,7 @@ lines(N3[II,]$RMSE,lwd=3,lty=2,col="green")
 points(N3[II,]$RMSE,lwd=5,pch=15,cex=1.2,col="green")
 legend("topright",legend  = c("wBB1","wBB2","wChao2",'BB'),
        col= c('red','blue','darkorchid','green'),lty = c(2,2,2,2),
-       pch=c(16,17,18,15),merge = TRUE,cex = .9)
+       pch=c(16,17,18,15),merge = TRUE)
 
 
 # estimate III
@@ -999,7 +999,7 @@ points(N[III,]$V1,lwd=3,pch=4,col="black")
 abline(h=S12,lwd=3,col="gray")
 legend("bottomright",legend  = c("wBB1","wBB2","wChao2","BB","Obs"),
        col= c('red','blue','darkorchid','green','black'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE,cex = .9)
+       pch=c(16,17,18,15,4),merge = TRUE)
 
 # RMSE III
 plot(N[III,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,110),ylab="RMSE",xlab="Sample fraction",xaxt="n",main ="II vs III")
@@ -1013,7 +1013,7 @@ lines(N3[III,]$RMSE,lwd=3,lty=2,col="green")
 points(N3[III,]$RMSE,lwd=5,pch=15,cex=1.2,col="green")
 legend("topright",legend  = c("wBB1","wBB2","wChao2","BB"),
        col= c('red','blue','darkorchid','green'),lty = c(2,2,2,2),
-       pch=c(16,17,18,15),merge = TRUE,cex = .9)
+       pch=c(16,17,18,15),merge = TRUE)
 
 
 # estimate IV
@@ -1031,7 +1031,7 @@ points(N[IV,]$V1,lwd=3,pch=4,col="black")
 abline(h=S12,lwd=3,col="gray")
 legend("bottomright",legend  = c("wBB1","wBB2","wChao2","BB","Obs"),
        col= c('red','blue','darkorchid','green','black'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE,cex = .9)
+       pch=c(16,17,18,15,4),merge = TRUE)
 
 # RMSE IV
 plot(N[IV,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,125),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "III vs VI")
@@ -1045,7 +1045,7 @@ lines(N3[IV,]$RMSE,lwd=3,lty=2,col="green")
 points(N3[IV,]$RMSE,lwd=5,pch=15,cex=1.2,col="green")
 legend("topright",legend  = c("wBB1","wBB2","wChao2","BB"),
        col= c('red','blue','darkorchid','green'),lty = c(2,2,2,2),
-       pch=c(16,17,18,15),merge = TRUE,cex = .9)
+       pch=c(16,17,18,15),merge = TRUE)
 
 ############################ real data #########################################
 ##### BCI #####
@@ -1072,7 +1072,7 @@ write.csv(r., "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv
 
 ##  real plot ##
 # 不同模型
-A = seq(from=1,to=25,length.out=9)
+A = seq(from=1,to=33,length.out=9)
 B = A + 1
 C =  A + 2
 A;B;C
@@ -1092,7 +1092,7 @@ legend("bottomright",legend  = c("wBB1","wBB2","wChao2","Obs"),
        col= c('red','blue','darkgreen','black'),lty = c(2,2,2,2,2),
        pch=c(16,17,18,15,4),merge = TRUE)
 
-plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,37),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "BCI")
+plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,50),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "BCI")
 axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
 points(r[A,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$RMSE,lwd=3,lty=2,col="blue")
@@ -1103,7 +1103,7 @@ legend("topright",legend  = c("wBB1","wBB2","wChao2"),
        col= c('red','blue','darkgreen'),lty = c(2,2,2,2,2),
        pch=c(16,17,18,15,4),merge = TRUE)
 
-plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample fraction",ylim = c(0.75,.95),xaxt="n",main = "BCI")
+plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample fraction",ylim = c(0.75,1),xaxt="n",main = "BCI")
 axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
 points(r[A,]$CI,lwd=5,pch=16,cex=1.2,col="red2")
 lines(r[B,]$CI,lwd=3,lty=2,col="blue")
@@ -1189,10 +1189,10 @@ S = round(c(S1,S2,S3,S4),1);S
 
 # SD
 a = .5
-Sd = round(se_m(rowSums(P_1),T1,ceiling(T1)/a,S1_O,S1,.01),
-           se_m(rowSums(P_2),T2,ceiling(T2)/a,S2_O,S2,.01),
-           se_m(rowSums(P_3),T3,ceiling(T3)/a,S3_O,S3,.01),
-           se_m(rowSums(P_4),T4,ceiling(T4)/a,S4_O,S4,.01),2);Sd
+Sd = round(c(se_m(rowSums(P_1),T1,ceiling(T1)/a,S1_O,S1,.01),
+             se_m(rowSums(P_2),T2,ceiling(T2)/a,S2_O,S2,.01),
+             se_m(rowSums(P_3),T3,ceiling(T3)/a,S3_O,S3,.01),
+             se_m(rowSums(P_4),T4,ceiling(T4)/a,S4_O,S4,.01)),2);Sd
 cbind(S,Sd)
 
 
@@ -1252,7 +1252,7 @@ B.3 = 1 - (S14/S..3)
 B.4 = 1 - (S23/S..4)
 B.5 = 1 - (S24/S..5)
 B.6 = 1 - (S34/S..6)
-B = c(B.1,B.2,B.3,B.4,B.5,B.6)
+B. = c(B.1,B.2,B.3,B.4,B.5,B.6)
 
 round(B,2)
 round(B.,2)
