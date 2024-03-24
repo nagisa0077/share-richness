@@ -208,6 +208,19 @@ more = function(X,TT,p){
   ans = s.obs + Q0
   return(ans)
 }
+Chao = function(X,TT,t){
+  f = f(X)
+  I = which(X>0)
+  s.obs = length(I)
+  
+  w = t/(t-1)
+  q = t/TT
+  r = q/(1-q)
+  
+  ans = s.obs + (f[1]^2/ (2*w*f[2] + r*f[1]))
+  
+  return(ans)
+}
 
 # var
 var = function(s.obs,f1,f2,f3,f4,f5,t1,t2,T1,T2){
@@ -295,6 +308,13 @@ var_m = function(s.obs,f1,f2,t,TT){
   # S
   ans = s.obs + Q0
   return(ans)
+}
+var_C = function(s.obs,f1,f2,t,TT){
+  w = t/(t-1)
+  q = t/TT
+  r = q/(1-q)
+  
+  ans = s.obs + (f1^2/ (2*w*f2 + r*f1))
 }
 
 # Covmatrix
@@ -415,6 +435,12 @@ SD_m  = function(X,t,TT,O,d){
         (var_m(O,f[1],f[2]+d,t,TT)-var_m(O,f[1],f[2],t,TT))/d,-1)
   return(V)
 }
+SD_C  = function(X,t,TT,O,d){
+  f = f(X)
+  V = c((var_C(O,f[1]+d,f[2],t,TT)-var_C(O,f[1],f[2],t,TT))/d,
+        (var_C(O,f[1],f[2]+d,t,TT)-var_C(O,f[1],f[2],t,TT))/d,-1)
+  return(V)
+}
 
 # SE
 se = function(X,Y,t1,t2,T1,T2,O,E,d){
@@ -443,6 +469,12 @@ se3 = function(X,Y,t1,t2,T1,T2,O,E3,d){
 }
 se_m = function(X,t,TT,O,E,d){
   sd = SD_m(X,t,TT,O,d)
+  matrix = covmatrix_m(X,E,O)
+  SD = sqrt(abs(t(sd) %*% matrix %*% sd))
+  return(SD)
+}
+se_C = function(X,t,TT,O,E,d){
+  sd = SD_C(X,t,TT,O,d)
   matrix = covmatrix_m(X,E,O)
   SD = sqrt(abs(t(sd) %*% matrix %*% sd))
   return(SD)
@@ -806,16 +838,29 @@ cbind(c(mean(rowSums(Z1.2)[c(1:S12,(S1+1):S)]/T2),mean(rowSums(Z2.2)[c(1:S12,(S1
       c(sd(rowSums(Z1.2)[c(1:S12,(S1+1):S)]/T2)/mean(rowSums(Z1.2)[c(1:S12,(S1+1):S)]/T2),sd(rowSums(Z2.2)[c(1:S12,(S1+1):S)]/T2)/mean(rowSums(Z2.2)[c(1:S12,(S1+1):S)]/T2),
         sd(rowSums(Z3.2)[c(1:S12,(S1+1):S)]/T2)/mean(rowSums(Z3.2)[c(1:S12,(S1+1):S)]/T2),sd(rowSums(Z4.2)[c(1:S12,(S1+1):S)]/T2)/mean(rowSums(Z4.2)[c(1:S12,(S1+1):S)]/T2)))
 
-# ################################### test #######################################
+################################## test #######################################
 # TT = T1 = T2
 # t1 = t2 = TT
 a = Sys.time()
 set.seed(123)
 # set.seed(123)
-round(rbind(wor.O(X,Y,T1,T2,t1,t2,Z1.1,Z2.1),
-            wor.O(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-            wor.O(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-            wor.O(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# round(rbind(wor.O(X,Y,T1,T2,t1,t2,Z1.1,Z2.1),
+#             wor.O(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#             wor.O(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+#             wor.O(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+
+t1 = 0.1*T1
+t2 = 0.1*T2
+round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z1.2),2)
+round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z2.1),2)
+round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),2)
+round(wor(X,Y,T1,T2,t1,t2,Z1.1,Z4.1),2)
+round(wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),2)
+round(wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),2)
+round(wor(X,Y,T1,T2,t1,t2,Z2.1,Z4.1),2)
+round(wor(X,Y,T1,T2,t1,t2,Z3.1,Z3.2),2)
+round(wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1),2)
+round(wor(X,Y,T1,T2,t1,t2,Z4.1,Z4.2),2)
 Sys.time()-a
 ################################## 估計 ########################################
 a = Sys.time()
@@ -888,7 +933,8 @@ list
 # 匯入表格
 I = c(1:4);II = c(5:8);III = c(9:12);IV = c(13:16)
 list0 = rbind(list1,list3,list5,list7)
-a = 16
+# list0 = list
+a = 16 
 csv = rbind(list0[I,],list0[I+a,],list0[I+a*2,],list0[I+a*3,],
             list0[II,],list0[II+a,],list0[II+a*2,],list0[II+a*3,],
             list0[III,],list0[III+a,],list0[III+a*2,],list0[III+a*3,],
@@ -1132,21 +1178,6 @@ T1 = ncol(P_1);T2 = ncol(P_2);T3 = ncol(P_3);T4 = ncol(P_4)
 # Q_i
 f(rowSums(P_1));f(rowSums(P_2));f(rowSums(P_3));f(rowSums(P_4))
 
-## non estimate
-# richness
-S1_O = length(which(rowSums(P_1)>0))
-S2_O = length(which(rowSums(P_2)>0))
-S3_O = length(which(rowSums(P_3)>0))
-S4_O = length(which(rowSums(P_4)>0))
-
-# share
-S12_O = length(which(rowSums(P_1)*rowSums(P_2)>0))
-S13_O = length(which(rowSums(P_1)*rowSums(P_3)>0))
-S14_O = length(which(rowSums(P_1)*rowSums(P_4)>0))
-S23_O = length(which(rowSums(P_2)*rowSums(P_3)>0))
-S24_O = length(which(rowSums(P_2)*rowSums(P_4)>0))
-S34_O = length(which(rowSums(P_3)*rowSums(P_4)>0))
-
 
 ## estiamte
 r1 = data.frame(round(rbind(realdata1(P_1,P_2,.1),realdata1(P_1,P_2,.2),
@@ -1174,28 +1205,59 @@ r6 = data.frame(round(rbind(realdata1(P_3,P_4,.1),realdata1(P_3,P_4,.2),
                             realdata1(P_3,P_4,.5),realdata1(P_3,P_4,.6),
                             realdata1(P_3,P_4,.7),realdata1(P_3,P_4,.8),realdata1(P_3,P_4,.9)),2));r6
 
-I = c(9:12,17:20,25:28)
-r = rbind(r1[I,],r2[I,],r3[I,],r4[I,],r5[I,],r6[I,])
+I = c(9:12)
+II = c(17:20)
+III = c(25:28)
+r = rbind(r1[I,],r2[I,],r3[I,],r4[I,],r5[I,],r6[I,],
+          r1[II,],r2[II,],r3[II,],r4[II,],r5[II,],r6[II,],
+          r1[III,],r2[III,],r3[III,],r4[III,],r5[III,],r6[III,])
 write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
+
+# 0.3
+S12 = r1$E[9];S13 = r2$E[9];S14 = r3$E[9];S23 = r4$E[9];S24 = r5$E[9];S34 = r6$E[9]
+# 0.5
 S12 = r1$E[17];S13 = r2$E[17];S14 = r3$E[17];S23 = r4$E[17];S24 = r5$E[17];S34 = r6$E[17]
+# 0.7
+S12 = r1$E[23];S13 = r2$E[23];S14 = r3$E[23];S23 = r4$E[23];S24 = r5$E[23];S34 = r6$E[23]
+
+a = .7
 
 ## one community richness
-# estimate
-S1 = more(rowSums(P_1),T1,.5)
-S2 = more(rowSums(P_2),T2,.5)
-S3 = more(rowSums(P_3),T3,.5)
-S4 = more(rowSums(P_4),T4,.5)
+# Observed
+S1_O = length(which(rowSums(P_1)>0))
+S2_O = length(which(rowSums(P_2)>0))
+S3_O = length(which(rowSums(P_3)>0))
+S4_O = length(which(rowSums(P_4)>0))
+
+# BB
+set.seed(123)
+S1 = more(rowSums(P_1),T1,a)
+S2 = more(rowSums(P_2),T2,a)
+S3 = more(rowSums(P_3),T3,a)
+S4 = more(rowSums(P_4),T4,a)
 S = round(c(S1,S2,S3,S4),1);S
 
-# SD
-a = .5
 Sd = round(c(se_m(rowSums(P_1),T1,ceiling(T1)/a,S1_O,S1,.01),
              se_m(rowSums(P_2),T2,ceiling(T2)/a,S2_O,S2,.01),
              se_m(rowSums(P_3),T3,ceiling(T3)/a,S3_O,S3,.01),
-             se_m(rowSums(P_4),T4,ceiling(T4)/a,S4_O,S4,.01)),2);Sd
+             se_m(rowSums(P_4),T4,ceiling(T4)/a,S4_O,S4,.01)),1);Sd
+
+
 cbind(S,Sd)
 
+# Chao
+S1.C = Chao(rowSums(P_1),ceiling(T1)/a,T1)
+S2.C = Chao(rowSums(P_2),ceiling(T2)/a,T2)
+S3.C = Chao(rowSums(P_3),ceiling(T3)/a,T3)
+S4.C = Chao(rowSums(P_4),ceiling(T4)/a,T4)
+S.C = round(c(S1.C,S2.C,S3.C,S4.C),2);S.C
 
+a = .5
+Sd.C = round(c(se_C(rowSums(P_1),T1,ceiling(T1)/a,S1_O,S1,.01),
+               se_C(rowSums(P_2),T2,ceiling(T2)/a,S2_O,S2,.01),
+               se_C(rowSums(P_3),T3,ceiling(T3)/a,S3_O,S3,.01),
+               se_C(rowSums(P_4),T4,ceiling(T4)/a,S4_O,S4,.01)),2)
+cbind(S.C,Sd.C)
 
 ## species richness of two community
 # obs
@@ -1206,7 +1268,7 @@ S.4_O = S2_O+S3_O-S23_O
 S.5_O = S2_O+S4_O-S24_O
 S.6_O = S3_O+S4_O-S34_O
 
-# estimate 1
+# estimate BB1
 S.1 = S1+S2-S12
 S.2 = S1+S3-S13
 S.3 = S1+S4-S14
@@ -1214,75 +1276,130 @@ S.4 = S2+S3-S23
 S.5 = S2+S4-S24
 S.6 = S3+S4-S34
 
-# estimate 2
-S..1 = more((rowSums(P_1)+rowSums(P_2)),T1+T2,.5)
-S..2 = more((rowSums(P_1)+rowSums(P_3)),T1+T3,.5)
-S..3 = more((rowSums(P_1)+rowSums(P_4)),T1+T4,.5)
-S..4 = more((rowSums(P_2)+rowSums(P_3)),T2+T3,.5)
-S..5 = more((rowSums(P_2)+rowSums(P_4)),T2+T4,.5)
-S..6 = more((rowSums(P_3)+rowSums(P_4)),T2+T4,.5)
+# estimate BB2
+S..1 = more((rowSums(P_1)+rowSums(P_2)),T1+T2,a)
+S..2 = more((rowSums(P_1)+rowSums(P_3)),T1+T3,a)
+S..3 = more((rowSums(P_1)+rowSums(P_4)),T1+T4,a)
+S..4 = more((rowSums(P_2)+rowSums(P_3)),T2+T3,a)
+S..5 = more((rowSums(P_2)+rowSums(P_4)),T2+T4,a)
+S..6 = more((rowSums(P_3)+rowSums(P_4)),T2+T4,a)
+
+# estimate Chao1
+S.1.C = S1.C+S2.C-S12.P
+S.2.C = S1.C+S3.C-S13.P
+S.3.C = S1.C+S4.C-S14.P
+S.4.C = S2.C+S3.C-S23.P
+S.5.C = S2.C+S4.C-S24.P
+S.6.C = S3.C+S4.C-S34.P
+
+# estimate Chao2
+S..1.C = Chao((rowSums(P_1)+rowSums(P_2)),T1+T2,ceiling(T1+T2)/a)
+S..2.C = Chao((rowSums(P_1)+rowSums(P_3)),T1+T3,ceiling(T1+T3)/a)
+S..3.C = Chao((rowSums(P_1)+rowSums(P_4)),T1+T4,ceiling(T1+T4)/a)
+S..4.C = Chao((rowSums(P_2)+rowSums(P_3)),T2+T3,ceiling(T2+T3)/a)
+S..5.C = Chao((rowSums(P_2)+rowSums(P_4)),T2+T4,ceiling(T2+T4)/a)
+S..6.C = Chao((rowSums(P_3)+rowSums(P_4)),T3+T4,ceiling(T3+T4)/a)
 
 round(c(S.1,S.2,S.3,S.4,S.5,S.6),1)
 round(c(S..1,S..2,S..3,S..4,S..5,S..6),1)
+round(c(S.1.C,S.2.C,S.3.C,S.4.C,S.5.C,S.6.C),1)
+round(c(S..1.C,S..2.C,S..3.C,S..4.C,S..5.C,S..6.C),1)
 round(c(S.1_O,S.2_O,S.3_O,S.4_O,S.5_O,S.6_O),1)
 
 ## beta diversity
 # obs
-B1_O = 1 - (S12_O/S.1_O)
-B2_O = 1 - (S13_O/S.2_O)
-B3_O = 1 - (S14_O/S.3_O)
-B4_O = 1 - (S23_O/S.4_O)
-B5_O = 1 - (S24_O/S.5_O)
-B6_O = 1 - (S34_O/S.6_O)
-B_O = c(B1_O,B2_O,B3_O,B4_O,B5_O,B6_O)
+B_O = c(1 - (S12_O/S.1_O),
+        1 - (S13_O/S.2_O),
+        1 - (S14_O/S.3_O),
+        1 - (S23_O/S.4_O),
+        1 - (S24_O/S.5_O),
+        1 - (S34_O/S.6_O))
 
-# estimate 1
-B1 = 1 - (S12/S.1)
-B2 = 1 - (S13/S.2)
-B3 = 1 - (S14/S.3)
-B4 = 1 - (S23/S.4)
-B5 = 1 - (S24/S.5)
-B6 = 1 - (S34/S.6)
-B = c(B1,B2,B3,B4,B5,B6)
 
-# estimate 2
-B.1 = 1 - (S12/S..1)
-B.2 = 1 - (S13/S..2)
-B.3 = 1 - (S14/S..3)
-B.4 = 1 - (S23/S..4)
-B.5 = 1 - (S24/S..5)
-B.6 = 1 - (S34/S..6)
-B. = c(B.1,B.2,B.3,B.4,B.5,B.6)
+# estimate BB1
+B = c(1 - (S12/S.1),
+      1 - (S13/S.2),
+      1 - (S14/S.3),
+      1 - (S23/S.4),
+      1 - (S24/S.5),
+      1 - (S34/S.6))
+
+# estimate BB2
+B. = c(1 - (S12/S..1),
+       1 - (S13/S..2),
+       1 - (S14/S..3),
+       1 - (S23/S..4),
+       1 - (S24/S..5),
+       1 - (S34/S..6))
+
+# estimate Chao1
+B.C = c(1 - (S12/S.1.C),
+        1 - (S13/S.2.C),
+        1 - (S14/S.3.C),
+        1 - (S23/S.4.C),
+        1 - (S24/S.5.C),
+        1 - (S34/S.6.C))
+
+# estimate Chao2
+B..C = c(1 - (S12/S..1.C),
+         1 - (S13/S..2.C),
+         1 - (S14/S..3.C),
+         1 - (S23/S..4.C),
+         1 - (S24/S..5.C),
+         1 - (S34/S..6.C))
+
 
 round(B,2)
 round(B.,2)
+round(B.C,2)
+round(B..C,2)
 round(B_O,2)
 
 ## beta diversity plot
-# non estimate
+# Observed
 j_O = matrix(c(NA,B_O[1:3],
-             B_O[1],NA,B_O[4:5],
-             B_O[2],B_O[4],NA,B_O[6],
-             B_O[3],B_O[5],B_O[6],NA),4)
-row.names(j_O) = colnames(j_O) = c('foothill','lower conifer','upper conifer','high country')
-jaccard_dist_O = as.dist(j_O);jaccard_dist_O
+               B_O[1],NA,B_O[4:5],
+               B_O[2],B_O[4],NA,B_O[6],
+               B_O[3],B_O[5],B_O[6],NA),4)
 
-# Hierarchical clustering based on Jaccard distance
-hc_O = hclust(jaccard_dist_O, method = "average")
 
-# estimate
+
+# estImate BB
 j = matrix(c(NA,B[1:3],
              B[1],NA,B[4:5],
              B[2],B[4],NA,B[6],
              B[3],B[5],B[6],NA),4)
-row.names(j) = colnames(j) = c('foothill','lower conifer','upper conifer','high country')
-jaccard_dist = as.dist(j);jaccard_dist
+
+j = matrix(c(NA,B.[1:3],
+             B.[1],NA,B.[4:5],
+             B.[2],B.[4],NA,B.[6],
+             B.[3],B.[5],B.[6],NA),4)
+
+# Chao
+j.C = matrix(c(NA,B.C[1:3],
+               B.C[1],NA,B.C[4:5],
+               B.C[2],B.C[4],NA,B.C[6],
+               B.C[3],B.C[5],B.C[6],NA),4)
+
+j.C = matrix(c(NA,B..C[1:3],
+               B..C[1],NA,B..C[4:5],
+               B..C[2],B..C[4],NA,B..C[6],
+               B..C[3],B..C[5],B..C[6],NA),4)
+
+row.names(j_O) = colnames(j_O) = row.names(j) = colnames(j) = row.names(j.C) = colnames(j.C) = c('foothill','lower conifer','upper conifer','high country')
+jaccard_dist_O = as.dist(j_O);jaccard_dist_O
+jaccard_dist.BB = as.dist(j);jaccard_dist.BB
+jaccard_dist.C = as.dist(j.C);jaccard_dist.C
 
 # Hierarchical clustering based on Jaccard distance
-hc = hclust(jaccard_dist, method = "average")
+hc_O = hclust(jaccard_dist_O, method = "average")
+hc.BB = hclust(jaccard_dist.BB, method = "average")
+hc.C = hclust(jaccard_dist.C, method = "average")
+
 
 # Plot the dendrogram
-par(mfrow=c(1,2))
-plot(hc_O, xlab = "Samples", ylab = "Distance", main = "non-Estimate")
-plot(hc, xlab = "Samples", ylab = "Distance", main = "Estimate")
+par(mfrow=c(1,3))
+plot(hc_O, xlab = "Samples", ylab = "Distance", main = "Observed")
+plot(hc.BB, xlab = "Samples", ylab = "Distance", main = "Estimated by BB")
+plot(hc.C, xlab = "Samples", ylab = "Distance", main = "Estimated by Chao")
 

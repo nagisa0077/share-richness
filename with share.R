@@ -1035,7 +1035,6 @@ S3 = more(rowSums(P_3),T3)
 S4 = more(rowSums(P_4),T4)
 S = round(c(S1,S2,S3,S4),2);S
 
-a = .5
 Sd = round(c(se_m(rowSums(P_1),T1,S1_O,S1,.01),
              se_m(rowSums(P_2),T2,S2_O,S2,.01),
              se_m(rowSums(P_3),T3,S3_O,S3,.01),
@@ -1092,13 +1091,13 @@ S.4.C = S2.C+S3.C-S23.P
 S.5.C = S2.C+S4.C-S24.P
 S.6.C = S3.C+S4.C-S34.P
 
-# estimate BB2
+# estimate Chao2
 S..1.C = Chao((rowSums(P_1)+rowSums(P_2)),T1+T2)
 S..2.C = Chao((rowSums(P_1)+rowSums(P_3)),T1+T3)
 S..3.C = Chao((rowSums(P_1)+rowSums(P_4)),T1+T4)
 S..4.C = Chao((rowSums(P_2)+rowSums(P_3)),T2+T3)
 S..5.C = Chao((rowSums(P_2)+rowSums(P_4)),T2+T4)
-S..6.C = Chao((rowSums(P_3)+rowSums(P_4)),T2+T4)
+S..6.C = Chao((rowSums(P_3)+rowSums(P_4)),T3+T4)
 
 round(c(S.1,S.2,S.3,S.4,S.5,S.6),1)
 round(c(S..1,S..2,S..3,S..4,S..5,S..6),1)
