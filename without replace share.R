@@ -1178,8 +1178,16 @@ T1 = ncol(P_1);T2 = ncol(P_2);T3 = ncol(P_3);T4 = ncol(P_4)
 # Q_i
 f(rowSums(P_1));f(rowSums(P_2));f(rowSums(P_3));f(rowSums(P_4))
 
+## share
+# obs 
+S12_O = length(which(rowSums(P_1)*rowSums(P_2)>0))
+S13_O = length(which(rowSums(P_1)*rowSums(P_3)>0))
+S14_O = length(which(rowSums(P_1)*rowSums(P_4)>0))
+S23_O = length(which(rowSums(P_2)*rowSums(P_3)>0))
+S24_O = length(which(rowSums(P_2)*rowSums(P_4)>0))
+S34_O = length(which(rowSums(P_3)*rowSums(P_4)>0))
 
-## estiamte
+# estiamte
 r1 = data.frame(round(rbind(realdata1(P_1,P_2,.1),realdata1(P_1,P_2,.2),
                             realdata1(P_1,P_2,.3),realdata1(P_1,P_2,.4),
                             realdata1(P_1,P_2,.5),realdata1(P_1,P_2,.6),
@@ -1214,13 +1222,20 @@ r = rbind(r1[I,],r2[I,],r3[I,],r4[I,],r5[I,],r6[I,],
 write.csv(r, "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
 
 # 0.3
+a = .3
 S12 = r1$E[9];S13 = r2$E[9];S14 = r3$E[9];S23 = r4$E[9];S24 = r5$E[9];S34 = r6$E[9]
-# 0.5
-S12 = r1$E[17];S13 = r2$E[17];S14 = r3$E[17];S23 = r4$E[17];S24 = r5$E[17];S34 = r6$E[17]
-# 0.7
-S12 = r1$E[23];S13 = r2$E[23];S14 = r3$E[23];S23 = r4$E[23];S24 = r5$E[23];S34 = r6$E[23]
+S12.C = r1$E[11];S13.C = r2$E[11];S14.C = r3$E[11];S23.C = r4$E[11];S24.C = r5$E[11];S34.C = r6$E[11]
 
+# 0.5
+a = .5
+S12 = r1$E[17];S13 = r2$E[17];S14 = r3$E[17];S23 = r4$E[17];S24 = r5$E[17];S34 = r6$E[17]
+S12.C = r1$E[19];S13.C = r2$E[19];S14.C = r3$E[19];S23.C = r4$E[19];S24.C = r5$E[19];S34.C = r6$E[19]
+
+# 0.7
 a = .7
+S12 = r1$E[25];S13 = r2$E[25];S14 = r3$E[25];S23 = r4$E[25];S24 = r5$E[25];S34 = r6$E[25]
+S12.C = r1$E[27];S13.C = r2$E[27];S14.C = r3$E[27];S23.C = r4$E[27];S24.C = r5$E[27];S34.C = r6$E[27]
+
 
 ## one community richness
 # Observed
@@ -1285,12 +1300,12 @@ S..5 = more((rowSums(P_2)+rowSums(P_4)),T2+T4,a)
 S..6 = more((rowSums(P_3)+rowSums(P_4)),T2+T4,a)
 
 # estimate Chao1
-S.1.C = S1.C+S2.C-S12.P
-S.2.C = S1.C+S3.C-S13.P
-S.3.C = S1.C+S4.C-S14.P
-S.4.C = S2.C+S3.C-S23.P
-S.5.C = S2.C+S4.C-S24.P
-S.6.C = S3.C+S4.C-S34.P
+S.1.C = S1.C+S2.C-S12.C
+S.2.C = S1.C+S3.C-S13.C
+S.3.C = S1.C+S4.C-S14.C
+S.4.C = S2.C+S3.C-S23.C
+S.5.C = S2.C+S4.C-S24.C
+S.6.C = S3.C+S4.C-S34.C
 
 # estimate Chao2
 S..1.C = Chao((rowSums(P_1)+rowSums(P_2)),T1+T2,ceiling(T1+T2)/a)
@@ -1314,7 +1329,6 @@ B_O = c(1 - (S12_O/S.1_O),
         1 - (S23_O/S.4_O),
         1 - (S24_O/S.5_O),
         1 - (S34_O/S.6_O))
-
 
 # estimate BB1
 B = c(1 - (S12/S.1),
