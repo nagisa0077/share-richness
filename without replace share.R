@@ -194,14 +194,14 @@ BB = function(X,Y,T1,T2,t1,t2){
 more = function(X,TT,p){
   f = f(X)
   s.obs = sum(X>0)
-  t = ceiling(p*T1)
+  t = ceiling(p*TT)
   w = t/TT
-  a = max((f[1]-f[2]),1)
+  A = max((f[1]-f[2]),1)
   
   if(f[2]==0){
     Q0 = (t-1)/t * (1-w)/w * (f[1]-1)
   }else{
-    Q0 = (t-1)/t * (1-w)*f[1]^2/(f[2] + w* a)
+    Q0 = (t-1)/t * (1-w)*f[1]^2/(f[2] + w*A)
   }
   
   # S
@@ -1167,8 +1167,8 @@ P_2 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\dat
 P_3 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data3.csv"))
 P_4 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data4.csv"))
 P_1 = P_1[,-1];P_2 = P_2[,-1];P_3 = P_3[,-1];P_4 = P_4[,-1]
-p1 = rowSums(P_1)/ncol(P_1);p2 = rowSums(P_2)/ncol(P_2)
-p3 = rowSums(P_3)/ncol(P_3);p4 = rowSums(P_4)/ncol(P_4)
+p1 = rowSums(P_1)[which(rowSums(P_1)>0)]/ncol(P_1);p2 = rowSums(P_2)[which(rowSums(P_2)>0)]/ncol(P_2)
+p3 = rowSums(P_3)[which(rowSums(P_3)>0)]/ncol(P_3);p4 = rowSums(P_4)[which(rowSums(P_4)>0)]/ncol(P_4)
 mean(p1);mean(p2);mean(p3);mean(p4)
 sd(p1)/mean(p1);sd(p2)/mean(p2);sd(p3)/mean(p3);sd(p4)/mean(p4)
 
@@ -1243,21 +1243,20 @@ S1_O = length(which(rowSums(P_1)>0))
 S2_O = length(which(rowSums(P_2)>0))
 S3_O = length(which(rowSums(P_3)>0))
 S4_O = length(which(rowSums(P_4)>0))
+S_O = round(c(S1_O,S2_O,S3_O,S4_O),1)
 
 # BB
 set.seed(123)
-S1 = more(rowSums(P_1),T1,a)
-S2 = more(rowSums(P_2),T2,a)
-S3 = more(rowSums(P_3),T3,a)
-S4 = more(rowSums(P_4),T4,a)
-S = round(c(S1,S2,S3,S4),1);S
+S1 = more(rowSums(P_1),ceiling(T1)/a,a)
+S2 = more(rowSums(P_2),ceiling(T2)/a,a)
+S3 = more(rowSums(P_3),ceiling(T3)/a,a)
+S4 = more(rowSums(P_4),ceiling(T4)/a,a)
+S = round(c(S1,S2,S3,S4),1)
 
 Sd = round(c(se_m(rowSums(P_1),T1,ceiling(T1)/a,S1_O,S1,.01),
              se_m(rowSums(P_2),T2,ceiling(T2)/a,S2_O,S2,.01),
              se_m(rowSums(P_3),T3,ceiling(T3)/a,S3_O,S3,.01),
-             se_m(rowSums(P_4),T4,ceiling(T4)/a,S4_O,S4,.01)),1);Sd
-
-
+             se_m(rowSums(P_4),T4,ceiling(T4)/a,S4_O,S4,.01)),1)
 cbind(S,Sd)
 
 # Chao
@@ -1265,15 +1264,15 @@ S1.C = Chao(rowSums(P_1),ceiling(T1)/a,T1)
 S2.C = Chao(rowSums(P_2),ceiling(T2)/a,T2)
 S3.C = Chao(rowSums(P_3),ceiling(T3)/a,T3)
 S4.C = Chao(rowSums(P_4),ceiling(T4)/a,T4)
-S.C = round(c(S1.C,S2.C,S3.C,S4.C),2);S.C
+S.C = round(c(S1.C,S2.C,S3.C,S4.C),1)
 
-a = .5
 Sd.C = round(c(se_C(rowSums(P_1),T1,ceiling(T1)/a,S1_O,S1,.01),
                se_C(rowSums(P_2),T2,ceiling(T2)/a,S2_O,S2,.01),
                se_C(rowSums(P_3),T3,ceiling(T3)/a,S3_O,S3,.01),
                se_C(rowSums(P_4),T4,ceiling(T4)/a,S4_O,S4,.01)),2)
 cbind(S.C,Sd.C)
 
+S;S.C;S_O
 ## species richness of two community
 # obs
 S.1_O = S1_O+S2_O-S12_O
@@ -1308,12 +1307,12 @@ S.5.C = S2.C+S4.C-S24.C
 S.6.C = S3.C+S4.C-S34.C
 
 # estimate Chao2
-S..1.C = Chao((rowSums(P_1)+rowSums(P_2)),T1+T2,ceiling(T1+T2)/a)
-S..2.C = Chao((rowSums(P_1)+rowSums(P_3)),T1+T3,ceiling(T1+T3)/a)
-S..3.C = Chao((rowSums(P_1)+rowSums(P_4)),T1+T4,ceiling(T1+T4)/a)
-S..4.C = Chao((rowSums(P_2)+rowSums(P_3)),T2+T3,ceiling(T2+T3)/a)
-S..5.C = Chao((rowSums(P_2)+rowSums(P_4)),T2+T4,ceiling(T2+T4)/a)
-S..6.C = Chao((rowSums(P_3)+rowSums(P_4)),T3+T4,ceiling(T3+T4)/a)
+S..1.C = Chao((rowSums(P_1)+rowSums(P_2)),ceiling(T1+T2)/a,T1+T2)
+S..2.C = Chao((rowSums(P_1)+rowSums(P_3)),ceiling(T1+T3)/a,T1+T3)
+S..3.C = Chao((rowSums(P_1)+rowSums(P_4)),ceiling(T1+T4)/a,T1+T4)
+S..4.C = Chao((rowSums(P_2)+rowSums(P_3)),ceiling(T2+T3)/a,T2+T3)
+S..5.C = Chao((rowSums(P_2)+rowSums(P_4)),ceiling(T2+T4)/a,T2+T4)
+S..6.C = Chao((rowSums(P_3)+rowSums(P_4)),ceiling(T3+T4)/a,T3+T4)
 
 round(c(S.1,S.2,S.3,S.4,S.5,S.6),1)
 round(c(S..1,S..2,S..3,S..4,S..5,S..6),1)
@@ -1376,8 +1375,6 @@ j_O = matrix(c(NA,B_O[1:3],
                B_O[2],B_O[4],NA,B_O[6],
                B_O[3],B_O[5],B_O[6],NA),4)
 
-
-
 # estImate BB
 j = matrix(c(NA,B[1:3],
              B[1],NA,B[4:5],
@@ -1406,9 +1403,13 @@ jaccard_dist.BB = as.dist(j);jaccard_dist.BB
 jaccard_dist.C = as.dist(j.C);jaccard_dist.C
 
 # Hierarchical clustering based on Jaccard distance
-hc_O = hclust(jaccard_dist_O, method = "average")
-hc.BB = hclust(jaccard_dist.BB, method = "average")
-hc.C = hclust(jaccard_dist.C, method = "average")
+# hc_O = hclust(jaccard_dist_O, method = "average")
+# hc.BB = hclust(jaccard_dist.BB, method = "average")
+# hc.C = hclust(jaccard_dist.C, method = "average")
+
+hc_O = hclust(jaccard_dist_O, method = "single")
+hc.BB = hclust(jaccard_dist.BB, method = "single")
+hc.C = hclust(jaccard_dist.C, method = "single")
 
 
 # Plot the dendrogram

@@ -987,8 +987,8 @@ P_2 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\dat
 P_3 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data3.csv"))
 P_4 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data4.csv"))
 P_1 = P_1[,-1];P_2 = P_2[,-1];P_3 = P_3[,-1];P_4 = P_4[,-1]
-p1 = rowSums(P_1)/ncol(P_1);p2 = rowSums(P_2)/ncol(P_2)
-p3 = rowSums(P_3)/ncol(P_3);p4 = rowSums(P_4)/ncol(P_4)
+p1 = rowSums(P_1)[which(rowSums(P_1)>0)]/ncol(P_1);p2 = rowSums(P_2)[which(rowSums(P_2)>0)]/ncol(P_2)
+p3 = rowSums(P_3)[which(rowSums(P_3)>0)]/ncol(P_3);p4 = rowSums(P_4)[which(rowSums(P_4)>0)]/ncol(P_4)
 mean(p1);mean(p2);mean(p3);mean(p4)
 sd(p1)/mean(p1);sd(p2)/mean(p2);sd(p3)/mean(p3);sd(p4)/mean(p4)
 
@@ -1081,7 +1081,7 @@ S..2 = more((rowSums(P_1)+rowSums(P_3)),T1+T3)
 S..3 = more((rowSums(P_1)+rowSums(P_4)),T1+T4)
 S..4 = more((rowSums(P_2)+rowSums(P_3)),T2+T3)
 S..5 = more((rowSums(P_2)+rowSums(P_4)),T2+T4)
-S..6 = more((rowSums(P_3)+rowSums(P_4)),T2+T4)
+S..6 = more((rowSums(P_3)+rowSums(P_4)),T3+T4)
 
 # estimate Chao1
 S.1.C = S1.C+S2.C-S12.P
@@ -1107,13 +1107,13 @@ round(c(S.1_O,S.2_O,S.3_O,S.4_O,S.5_O,S.6_O),1)
 
 ## beta diversity
 # obs
-B1_O = 1 - (S12_O/S.1_O)
-B2_O = 1 - (S13_O/S.2_O)
-B3_O = 1 - (S14_O/S.3_O)
-B4_O = 1 - (S23_O/S.4_O)
-B5_O = 1 - (S24_O/S.5_O)
-B6_O = 1 - (S34_O/S.6_O)
-B_O = c(B1_O,B2_O,B3_O,B4_O,B5_O,B6_O)
+B_O = c(1 - (S12_O/S.1_O),
+        1 - (S13_O/S.2_O),
+        1 - (S14_O/S.3_O),
+        1 - (S23_O/S.4_O),
+        1 - (S24_O/S.5_O),
+        1 - (S34_O/S.6_O))
+
 
 # estimate BB1
 B = c(1 - (S12/S.1),
@@ -1161,8 +1161,6 @@ j_O = matrix(c(NA,B_O[1:3],
                B_O[2],B_O[4],NA,B_O[6],
                B_O[3],B_O[5],B_O[6],NA),4)
 
-
-
 # estImate BB
 j = matrix(c(NA,B[1:3],
              B[1],NA,B[4:5],
@@ -1194,6 +1192,23 @@ jaccard_dist.C = as.dist(j.C);jaccard_dist.C
 hc_O = hclust(jaccard_dist_O, method = "average")
 hc.BB = hclust(jaccard_dist.BB, method = "average")
 hc.C = hclust(jaccard_dist.C, method = "average")
+
+hc_O = hclust(jaccard_dist_O, method = "ward.D2")
+hc.BB = hclust(jaccard_dist.BB, method = "ward.D2")
+hc.C = hclust(jaccard_dist.C, method = "ward.D2")
+
+hc_O = hclust(jaccard_dist_O, method = "single")
+hc.BB = hclust(jaccard_dist.BB, method = "single")
+hc.C = hclust(jaccard_dist.C, method = "single")
+
+hc_O = hclust(jaccard_dist_O, method = "complete")
+hc.BB = hclust(jaccard_dist.BB, method = "complete")
+hc.C = hclust(jaccard_dist.C, method = "complete")
+
+hc_O = hclust(jaccard_dist_O, method = "mcquitty")
+hc.BB = hclust(jaccard_dist.BB, method = "mcquitty")
+hc.C = hclust(jaccard_dist.C, method = "mcquitty")
+
 
 
 # Plot the dendrogram
