@@ -129,8 +129,6 @@ Chao = function(X,t){
   
   K = (t-1)/t
   
-  
-  
   ans = if(f[2]==0){s.obs +
       K * ((f[1]*(f[1]-1))/2)
   }else{s.obs +
@@ -244,7 +242,6 @@ covmatrix_m = function(X,s,O){
   }
   return(cov_matrix)
 }
-
 
 # population SD
 SD  = function(X,Y,t1,t2,O,d){
@@ -992,11 +989,31 @@ p3 = rowSums(P_3)[which(rowSums(P_3)>0)]/ncol(P_3);p4 = rowSums(P_4)[which(rowSu
 mean(p1);mean(p2);mean(p3);mean(p4)
 sd(p1)/mean(p1);sd(p2)/mean(p2);sd(p3)/mean(p3);sd(p4)/mean(p4)
 
+dat = list(I = P_1,II = P_2, III = P_3,IV = P_4)
+dat2 = list(I = cbind(P_1,P_2),II = cbind(P_1,P_3), III = cbind(P_1,P_4),
+            IV = cbind(P_2,P_3),V = cbind(P_2,P_4), VI = cbind(P_3,P_4))
+
+
 # T
 T1 = ncol(P_1);T2 = ncol(P_2);T3 = ncol(P_3);T4 = ncol(P_4)
 
 # Q_i
-f(rowSums(P_1));f(rowSums(P_2));f(rowSums(P_3));f(rowSums(P_4))
+library(iNEXT)
+DataInfo(P_1, datatype="incidence_raw")
+DataInfo(P_2, datatype="incidence_raw")
+DataInfo(P_3, datatype="incidence_raw")
+DataInfo(P_4, datatype="incidence_raw")
+
+DataInfo(dat, datatype="incidence_raw")
+
+# estimateD
+estimateD(P_1, q = 0, datatype = "incidence_raw", base="coverage")
+estimateD(P_2, q = 0, datatype = "incidence_raw", base="coverage")
+estimateD(P_3, q = 0, datatype = "incidence_raw", base="coverage")
+estimateD(P_4, q = 0, datatype = "incidence_raw", base="coverage")
+
+estimateD(dat2, q = 0, datatype = "incidence_raw", base="coverage", level = 0.9)
+estimateD(dat2, q = 0, datatype = "incidence_raw", base="size", level = 150)
 
 
 ## share
@@ -1154,6 +1171,16 @@ round(B.C,2)
 round(B..C,2)
 round(B_O,2)
 
+## 整理
+list = cbind(c(S.1_O,S..1,S..1.C,S.2_O,S..2,S..2.C,
+               S.3_O,S..3,S..3.C,S.4_O,S..4,S..4.C,
+               S.5_O,S..5,S..5.C,S.6_O,S..6,S..6.C),
+             c(B_O[1],B.[1],B..C[1],B_O[2],B.[2],B..C[2],
+               B_O[3],B.[3],B..C[3],B_O[4],B.[4],B..C[4],
+               B_O[5],B.[5],B..C[5],B_O[6],B.[6],B..C[6]))
+write.csv(round(list,2), "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
+
+
 ## beta diversity plot
 # Observed
 j_O = matrix(c(NA,B_O[1:3],
@@ -1193,27 +1220,26 @@ hc_O = hclust(jaccard_dist_O, method = "average")
 hc.BB = hclust(jaccard_dist.BB, method = "average")
 hc.C = hclust(jaccard_dist.C, method = "average")
 
-hc_O = hclust(jaccard_dist_O, method = "ward.D2")
-hc.BB = hclust(jaccard_dist.BB, method = "ward.D2")
-hc.C = hclust(jaccard_dist.C, method = "ward.D2")
-
-hc_O = hclust(jaccard_dist_O, method = "single")
-hc.BB = hclust(jaccard_dist.BB, method = "single")
-hc.C = hclust(jaccard_dist.C, method = "single")
-
-hc_O = hclust(jaccard_dist_O, method = "complete")
-hc.BB = hclust(jaccard_dist.BB, method = "complete")
-hc.C = hclust(jaccard_dist.C, method = "complete")
-
-hc_O = hclust(jaccard_dist_O, method = "mcquitty")
-hc.BB = hclust(jaccard_dist.BB, method = "mcquitty")
-hc.C = hclust(jaccard_dist.C, method = "mcquitty")
+# hc_O = hclust(jaccard_dist_O, method = "ward.D2")
+# hc.BB = hclust(jaccard_dist.BB, method = "ward.D2")
+# hc.C = hclust(jaccard_dist.C, method = "ward.D2")
+# 
+# hc_O = hclust(jaccard_dist_O, method = "single")
+# hc.BB = hclust(jaccard_dist.BB, method = "single")
+# hc.C = hclust(jaccard_dist.C, method = "single")
+# 
+# hc_O = hclust(jaccard_dist_O, method = "complete")
+# hc.BB = hclust(jaccard_dist.BB, method = "complete")
+# hc.C = hclust(jaccard_dist.C, method = "complete")
+# 
+# hc_O = hclust(jaccard_dist_O, method = "mcquitty")
+# hc.BB = hclust(jaccard_dist.BB, method = "mcquitty")
+# hc.C = hclust(jaccard_dist.C, method = "mcquitty")
 
 
 
 # Plot the dendrogram
 par(mfrow=c(1,3))
 plot(hc_O, xlab = "Samples", ylab = "Distance", main = "Observed")
-plot(hc.BB, xlab = "Samples", ylab = "Distance", main = "Estimated by BB")
-plot(hc.C, xlab = "Samples", ylab = "Distance", main = "Estimated by Chao")
-
+plot(hc.BB, xlab = "Samples", ylab = "Distance", main = "New based")
+plot(hc.C, xlab = "Samples", ylab = "Distance", main = "Chao2 base")

@@ -709,6 +709,16 @@ fileInput("P_X", label = "First population")
 fileInput("P_Y", label = "Second population")
 sliderInput("a", label = "Sample fraction", min = 0, 
         max = 1, value = .5)
+
+# 
+X <- reactive({
+    req(input$P_X)
+    read.csv(input$P_X$datapath)
+})
+Y <- reactive({
+    req(input$P_Y)
+    read.csv(input$P_Y$datapath)
+})
 ```
    
 Column 2 {.tabset}
@@ -717,43 +727,18 @@ Column 2 {.tabset}
 ### Summary
 
 ```{r}
-X <- reactive({
-    req(input$P_X)
-    read.csv(input$P_X$datapath)
-})
-
-Y <- reactive({
-    req(input$P_Y)
-    read.csv(input$P_Y$datapath)
-})
-
 dat <- reactive({
   list(population_I = X(), population_II = Y())
 })
 
-
-  
 renderTable({
   DataInfo(dat(), datatype="incidence_raw")
   })
-
-
 ```   
  
 ### Table
     
 ```{r}
-X <- reactive({
-    req(input$P_X)
-    read.csv(input$P_X$datapath)
-})
-
-Y <- reactive({
-    req(input$P_Y)
-    read.csv(input$P_Y$datapath)
-})
-
-
 renderTable({
    if(input$sampling == 1){
     realdata1(X(),Y())
@@ -761,6 +746,11 @@ renderTable({
     realdata2(X(),Y(),input$a)
   }
   })
+
+```
+
+### Plot
+```{r}
 
 ```
 
@@ -774,26 +764,10 @@ Column 1 {.tabset}
 ### Summary
 
 ```{r}
-X <- reactive({
-    req(input$P_X)
-    read.csv(input$P_X$datapath)
-})
 
-Y <- reactive({
-    req(input$P_Y)
-    read.csv(input$P_Y$datapath)
-})
-
-dat <- reactive({
-  list(population_I = X(), population_II = Y())
-})
-
-
-  
 renderTable({
   DataInfo(dat(), datatype="incidence_raw")
   })
-
 
 ```   
  

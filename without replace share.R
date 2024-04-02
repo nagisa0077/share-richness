@@ -1368,6 +1368,15 @@ round(B.C,2)
 round(B..C,2)
 round(B_O,2)
 
+list = cbind(c(S.1_O,S..1,S..1.C,S.2_O,S..2,S..2.C,
+               S.3_O,S..3,S..3.C,S.4_O,S..4,S..4.C,
+               S.5_O,S..5,S..5.C,S.6_O,S..6,S..6.C),
+             c(B_O[1],B.[1],B..C[1],B_O[2],B.[2],B..C[2],
+               B_O[3],B.[3],B..C[3],B_O[4],B.[4],B..C[4],
+               B_O[5],B.[5],B..C[5],B_O[6],B.[6],B..C[6]))
+write.csv(round(list,2), "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv")
+
+
 ## beta diversity plot
 # Observed
 j_O = matrix(c(NA,B_O[1:3],
@@ -1403,18 +1412,18 @@ jaccard_dist.BB = as.dist(j);jaccard_dist.BB
 jaccard_dist.C = as.dist(j.C);jaccard_dist.C
 
 # Hierarchical clustering based on Jaccard distance
-# hc_O = hclust(jaccard_dist_O, method = "average")
-# hc.BB = hclust(jaccard_dist.BB, method = "average")
-# hc.C = hclust(jaccard_dist.C, method = "average")
+hc_O = hclust(jaccard_dist_O, method = "average")
+hc.BB = hclust(jaccard_dist.BB, method = "average")
+hc.C = hclust(jaccard_dist.C, method = "average")
 
-hc_O = hclust(jaccard_dist_O, method = "single")
-hc.BB = hclust(jaccard_dist.BB, method = "single")
-hc.C = hclust(jaccard_dist.C, method = "single")
+# hc_O = hclust(jaccard_dist_O, method = "single")
+# hc.BB = hclust(jaccard_dist.BB, method = "single")
+# hc.C = hclust(jaccard_dist.C, method = "single")
 
 
 # Plot the dendrogram
 par(mfrow=c(1,3))
 plot(hc_O, xlab = "Samples", ylab = "Distance", main = "Observed")
-plot(hc.BB, xlab = "Samples", ylab = "Distance", main = "Estimated by BB")
-plot(hc.C, xlab = "Samples", ylab = "Distance", main = "Estimated by Chao")
+plot(hc.BB, xlab = "Samples", ylab = "Distance", main = "New based")
+plot(hc.C, xlab = "Samples", ylab = "Distance", main = "Chao2 base")
 
