@@ -963,135 +963,158 @@ II = I + 1
 III = II + 1
 IV = III + 1
 
-# 跑圖的時候格子要拉到最大
-# 圖說才會在正確的位置
-# estimate I
-par(mfrow=c(1,2),pty="s")
-plot(N[I,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(60,450),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "I vs III")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(N[I,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[I,]$E,lwd=3,lty=2,col="blue")
-points(N1[I,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(W12[I,]$E,lwd=3,lty=2,col="darkorchid")
-points(W12[I,]$E,lwd=5,pch=18,cex=1.2,col="darkorchid")
-lines(N3[I,]$E,lwd=3,lty=2,col="green")
-points(N3[I,]$E,lwd=5,pch=15,cex=1.2,col="green")
-lines(N[I,]$V1,lwd=3,lty=2,col="black")
-points(N[I,]$V1,lwd=3,pch=4,col="black")
-abline(h=S12,lwd=3,col="gray")
-legend("bottomright",legend  = c("wBB1","wBB2","wChao2",'BB',"Obs"),
-       col= c('red','blue','darkorchid','green','black'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE)
+# I
+df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 5),
+                 E = c(N[I, ]$E, N1[I, ]$E, W12[I,]$E,N3[I, ]$E, N[I, ]$V1),
+                 Estimator = rep(c("wNew","wNew2","wChao2","New","Obs"), each = 9))
 
-# RMSE I
-plot(N[I,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "I vs III")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(N[I,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[I,]$RMSE,lwd=3,lty=2,col="blue")
-points(N1[I,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-lines(W12[I,]$RMSE,lwd=3,lty=2,col="darkorchid")
-points(W12[I,]$RMSE,lwd=5,pch=18,cex=1.2,col="darkorchid")
-lines(N3[I,]$RMSE,lwd=3,lty=2,col="green")
-points(N3[I,]$RMSE,lwd=5,pch=15,cex=1.2,col="green")
-legend("topright",legend  = c("wBB1","wBB2","wChao2",'BB'),
-       col= c('red','blue','darkorchid','green'),lty = c(2,2,2,2),
-       pch=c(16,17,18,15),merge = TRUE)
+df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 4),
+                  RMSE = c(N[I, ]$RMSE, N1[I, ]$RMSE, W12[I,]$RMSE, N3[I, ]$RMSE),
+                  Estimator = rep(c("wNew","wNew2","wChao2","New"), each = 9))
 
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = 300, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.9')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "I vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
 
-# estimate II
-plot(N[II,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(95,350),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "II vs II")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(N[II,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[II,]$E,lwd=3,lty=2,col="blue")
-points(N1[II,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(W12[II,]$E,lwd=3,lty=2,col="darkorchid")
-points(W12[II,]$E,lwd=5,pch=18,cex=1.2,col="darkorchid")
-lines(N3[II,]$E,lwd=3,lty=2,col="green")
-points(N3[II,]$E,lwd=5,pch=15,cex=1.2,col="green")
-lines(N[II,]$V1,lwd=3,lty=2,col="black")
-points(N[II,]$V1,lwd=3,pch=4,col="black")
-abline(h=S12,lwd=3,col="gray")
-legend("bottomright",legend  = c("wBB1","wBB2","wChao2",'BB',"Obs"),
-       col= c('red','blue','darkorchid','green','black'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE)
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.9')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "I vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
 
-# RMSE II
-plot(N[II,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,110),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "II vs II")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(N[II,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[II,]$RMSE,lwd=3,lty=2,col="blue")
-points(N1[II,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-lines(W12[II,]$RMSE,lwd=3,lty=2,col="darkorchid")
-points(W12[II,]$RMSE,lwd=5,pch=18,cex=1.2,col="darkorchid")
-lines(N3[II,]$RMSE,lwd=3,lty=2,col="green")
-points(N3[II,]$RMSE,lwd=5,pch=15,cex=1.2,col="green")
-legend("topright",legend  = c("wBB1","wBB2","wChao2",'BB'),
-       col= c('red','blue','darkorchid','green'),lty = c(2,2,2,2),
-       pch=c(16,17,18,15),merge = TRUE)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 
-# estimate III
-plot(N[III,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(90,360),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main ="II vs III")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(N[III,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[III,]$E,lwd=3,lty=2,col="blue")
-points(N1[III,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(W12[III,]$E,lwd=3,lty=2,col="darkorchid")
-points(W12[III,]$E,lwd=5,pch=18,cex=1.2,col="darkorchid")
-lines(N3[III,]$E,lwd=3,lty=2,col="green")
-points(N3[III,]$E,lwd=5,pch=15,cex=1.2,col="green")
-lines(N[III,]$V1,lwd=3,lty=2,col="black")
-points(N[III,]$V1,lwd=3,pch=4,col="black")
-abline(h=S12,lwd=3,col="gray")
-legend("bottomright",legend  = c("wBB1","wBB2","wChao2","BB","Obs"),
-       col= c('red','blue','darkorchid','green','black'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE)
+# II
+df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 5),
+                 E = c(N[II, ]$E, N1[II, ]$E, W12[II,]$E,N3[II, ]$E, N[II, ]$V1),
+                 Estimator = rep(c("wNew","wNew2","wChao2","New","Obs"), each = 9))
 
-# RMSE III
-plot(N[III,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,110),ylab="RMSE",xlab="Sample fraction",xaxt="n",main ="II vs III")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(N[III,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[III,]$RMSE,lwd=3,lty=2,col="blue")
-points(N1[III,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-lines(W12[III,]$RMSE,lwd=3,lty=2,col="darkorchid")
-points(W12[III,]$RMSE,lwd=5,pch=18,cex=1.2,col="darkorchid")
-lines(N3[III,]$RMSE,lwd=3,lty=2,col="green")
-points(N3[III,]$RMSE,lwd=5,pch=15,cex=1.2,col="green")
-legend("topright",legend  = c("wBB1","wBB2","wChao2","BB"),
-       col= c('red','blue','darkorchid','green'),lty = c(2,2,2,2),
-       pch=c(16,17,18,15),merge = TRUE)
+df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 4),
+                  RMSE = c(N[II, ]$RMSE, N1[II, ]$RMSE, W12[II,]$RMSE, N3[II, ]$RMSE),
+                  Estimator = rep(c("wNew","wNew2","wChao2","New"), each = 9))
 
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = 300, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.9')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "II vs II") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
 
-# estimate IV
-plot(N[IV,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(80,340),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "III vs VI")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(N[IV,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[IV,]$E,lwd=3,lty=2,col="blue")
-points(N1[IV,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(W12[IV,]$E,lwd=3,lty=2,col="darkorchid")
-points(W12[IV,]$E,lwd=5,pch=18,cex=1.2,col="darkorchid")
-lines(N3[IV,]$E,lwd=3,lty=2,col="green")
-points(N3[IV,]$E,lwd=5,pch=15,cex=1.2,col="green")
-lines(N[IV,]$V1,lwd=3,lty=2,col="black")
-points(N[IV,]$V1,lwd=3,pch=4,col="black")
-abline(h=S12,lwd=3,col="gray")
-legend("bottomright",legend  = c("wBB1","wBB2","wChao2","BB","Obs"),
-       col= c('red','blue','darkorchid','green','black'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE)
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.9')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "II vs II") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
 
-# RMSE IV
-plot(N[IV,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,125),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "III vs VI")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(N[IV,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[IV,]$RMSE,lwd=3,lty=2,col="blue")
-points(N1[IV,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-lines(W12[IV,]$RMSE,lwd=3,lty=2,col="darkorchid")
-points(W12[IV,]$RMSE,lwd=5,pch=18,cex=1.2,col="darkorchid")
-lines(N3[IV,]$RMSE,lwd=3,lty=2,col="green")
-points(N3[IV,]$RMSE,lwd=5,pch=15,cex=1.2,col="green")
-legend("topright",legend  = c("wBB1","wBB2","wChao2","BB"),
-       col= c('red','blue','darkorchid','green'),lty = c(2,2,2,2),
-       pch=c(16,17,18,15),merge = TRUE)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
+
+# III
+df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 5),
+                 E = c(N[III,]$E, N1[III,]$E, W12[III,]$E,N3[III,]$E, N[III, ]$V1),
+                 Estimator = rep(c("wNew","wNew2","wChao2","New","Obs"), each = 9))
+
+df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 4),
+                  RMSE = c(N[III,]$RMSE, N1[III,]$RMSE, W12[III,]$RMSE, N3[III, ]$RMSE),
+                  Estimator = rep(c("wNew","wNew2","wChao2","New"), each = 9))
+
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = 300, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.9')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "II vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
+
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.9')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "II vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+
+grid.arrange(p1,p2,nrow =1, ncol = 2)
+
+# IV
+df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 5),
+                 E = c(N[IV, ]$E, N1[IV, ]$E, W12[IV,]$E,N3[IV, ]$E, N[IV, ]$V1),
+                 Estimator = rep(c("wNew","wNew2","wChao2","New","Obs"), each = 9))
+
+df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 4),
+                  RMSE = c(N[IV, ]$RMSE, N1[IV, ]$RMSE, W12[IV,]$RMSE, N3[IV, ]$RMSE),
+                  Estimator = rep(c("wNew","wNew2","wChao2","New"), each = 9))
+
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = 300, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.9')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "III vs VI") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
+
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c('.1', '.2', '.3', '.4', '.5', '.6', '.7', '.8', '.9')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "III vs IV") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 ############################ real data #########################################
 ##### BCI #####
@@ -1123,43 +1146,56 @@ B = A + 1
 C =  A + 2
 A;B;C
 
-par(mfrow=c(1,3),pty="s")
-plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(200,315),ylab="Average Estimate",xlab="Sample fraction",xaxt="n",main = "BCI")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(r[A,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$E,lwd=3,lty=2,col="blue")
-points(r[B,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(r[C,]$E,lwd=3,lty=2,col="darkgreen")
-points(r[C,]$E,lwd=5,pch=18,cex=1.2,col="darkgreen")
-lines(r[A,]$V1,lwd=3,lty=2,col="black")
-points(r[A,]$V1,lwd=3,pch=4,col="black")
-abline(h= O,lwd=3,col="gray")
-legend("bottomright",legend  = c("wBB1","wBB2","wChao2","Obs"),
-       col= c('red','blue','darkgreen','black'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE)
+df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 4),
+                 E = c(r[A,]$E, r[B,]$E, r[C,]$E, r[A,]$V1),
+                 Estimator = rep(c("wNew","wNew2","wChao2","Obs"), each = 9))
 
-plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,50),ylab="RMSE",xlab="Sample fraction",xaxt="n",main = "BCI")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(r[A,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$RMSE,lwd=3,lty=2,col="blue")
-points(r[B,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-lines(r[C,]$RMSE,lwd=3,lty=2,col="darkgreen")
-points(r[C,]$RMSE,lwd=5,pch=18,cex=1.2,col="darkgreen")
-legend("topright",legend  = c("wBB1","wBB2","wChao2"),
-       col= c('red','blue','darkgreen'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE)
+df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
+                  RMSE = c(r[A,]$RMSE, r[B,]$RMSE, r[C,]$RMSE),
+                  CI = c(r[A,]$CI, r[B,]$CI, r[C,]$CI),
+                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+  
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = O, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c(.1, .2, .3, .4, .5, .6, .7, .8, .9)) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "BCI") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
 
-plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample fraction",ylim = c(0.75,1),xaxt="n",main = "BCI")
-axis(1, c(1:9), labels=c(".1", ".2", ".3", ".4", ".5",'.6',',7','.8','.9'))
-points(r[A,]$CI,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$CI,lwd=3,lty=2,col="blue")
-points(r[B,]$CI,lwd=5,pch=17,cex=1.2,col="blue")
-lines(r[C,]$CI,lwd=3,lty=2,col="darkgreen")
-points(r[C,]$CI,lwd=5,pch=18,cex=1.2,col="darkgreen")
-legend("bottomright",legend  = c("wBB1","wBB2","wChao2"),
-       col= c('red','blue','darkgreen'),lty = c(2,2,2,2,2),
-       pch=c(16,17,18,15,4),merge = TRUE)
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample fraction", breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9), labels = c(.1, .2, .3, .4, .5, .6, .7, .8, .9)) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "BCI") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
 
+p3 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = CI, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample fraction", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "CI") +
+  labs(title = "BCI") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+
+grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
 
 ##### Sequoia National Park #####
 P_1 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data1.csv"))

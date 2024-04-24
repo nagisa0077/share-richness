@@ -731,6 +731,8 @@ write.csv(csv[,c(1:7)], "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table
 rm(I,II,III,IV,list0,A,csv);gc()
 ################################## plot ########################################
 # 不同估計方法
+library(ggplot2)
+library(gridExtra)
 A = seq(from=1,to=7,length.out=4)
 B = A + 1
 N = data.frame(rbind(list1[A,],list2[A,],list3[A,],list4[A,],list5[A,],list6[A,],list7[A,],list8[A,],list9[A,]))
@@ -742,103 +744,159 @@ II = I + 1
 III = II + 1
 IV = III + 1
 
-# 跑圖的時候格子要拉到最大
-# 圖說才會在正確的位置
-# estimate I
-par(mfrow=c(1,2),pty="s")
-plot(N[I,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "I vs III")
-axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
-points(N[I,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[I,]$E,lwd=3,lty=2,col="blue")
-points(N1[I,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(N[I,]$V1,lwd=3,lty=2,col="black")
-points(N[I,]$V1,lwd=3,pch=4,col="black")
-abline(h=S12,lwd=3,col="gray")
-legend("bottomright",legend  = c("BB","Pan","Obs"),
-       col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE)
+# I
+df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 3),
+                 E = c(N[I, ]$E, N1[I, ]$E, N[I, ]$V1),
+                 Estimator = rep(c("New","Pan","Obs"), each = 9))
 
-# RMSE I
-plot(N[I,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample size",xaxt="n",main = "I vs III")
-axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
-points(N[I,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[I,]$RMSE,lwd=3,lty=2,col="blue")
-points(N1[I,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-legend("topright",legend  = c("BB","Pan"),
-       col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
+                 RMSE = c(N[I, ]$RMSE, N1[I, ]$RMSE),
+                 Estimator = rep(c("New","Pan"), each = 9))
 
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
+          geom_point(size = 3.5) +
+          geom_line(size = 1.5) +
+          geom_hline(yintercept = 300, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+          scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+          scale_y_continuous(name = "Average Estimate", limits = c(120, 310)) +
+          labs(title = "I vs III") +
+          theme_minimal() +
+          theme(legend.position = "bottom") +
+          guides(color = guide_legend(override.aes = list(shape = 16)),
+                 linetype = guide_legend(override.aes = list(linetype = NULL))) +
+          scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+          scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
 
-# estimate II
-plot(N[II,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "II vs II")
-axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
-points(N[II,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[II,]$E,lwd=3,lty=2,col="blue")
-points(N1[II,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(N[II,]$V1,lwd=3,lty=2,col="black")
-points(N[II,]$V1,lwd=3,pch=4,col="black")
-abline(h=S12,lwd=3,col="gray")
-legend("bottomright",legend  = c("BB","Pan","Obs"),
-       col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE)
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "I vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
 
-# RMSE II
-plot(N[II,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample size",xaxt="n",main = "II vs II")
-axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
-points(N[II,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[II,]$RMSE,lwd=3,lty=2,col="blue")
-points(N1[II,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-legend("topright",legend  = c("BB","Pan"),
-       col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 
-# estimate III
-plot(N[III,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample size",xaxt="n",main ="II vs III")
-axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
-points(N[III,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[III,]$E,lwd=3,lty=2,col="blue")
-points(N1[III,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(N[III,]$V1,lwd=3,lty=2,col="black")
-points(N[III,]$V1,lwd=3,pch=4,col="black")
-abline(h=S12,lwd=3,col="gray")
-legend("bottomright",legend  = c("BB","Pan","Obs"),
-       col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE)
+# II
+df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 3),
+                 E = c(N[II, ]$E, N1[II, ]$E, N[II, ]$V1),
+                 Estimator = rep(c("New","Pan","Obs"), each = 9))
 
-# RMSE III
-plot(N[III,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,100),ylab="RMSE",xlab="Sample size",xaxt="n",main ="II vs III")
-axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
-points(N[III,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[III,]$RMSE,lwd=3,lty=2,col="blue")
-points(N1[III,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-legend("topright",legend  = c("BB","Pan"),
-       col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
+                  RMSE = c(N[II, ]$RMSE, N1[II, ]$RMSE),
+                  Estimator = rep(c("New","Pan"), each = 9))
+
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = 300, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "II vs II") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "II vs II") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 
-# estimate IV
-plot(N[IV,]$E,type="l",lwd=3,lty=2,col="red2",ylim=c(120,310),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "III vs VI")
-axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
-points(N[IV,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[IV,]$E,lwd=3,lty=2,col="blue")
-points(N1[IV,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(N[IV,]$V1,lwd=3,lty=2,col="black")
-points(N[IV,]$V1,lwd=3,pch=4,col="black")
-abline(h=S12,lwd=3,col="gray")
-legend("bottomright",legend  = c("BB","Pan","Obs"),
-       col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE)
+# III
+df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 3),
+                 E = c(N[III, ]$E, N1[III, ]$E, N[III, ]$V1),
+                 Estimator = rep(c("New","Pan","Obs"), each = 9))
 
-# RMSE IV
-plot(N[IV,]$RMSE,type="l",lwd=3,lty=2,col="red2",ylim=c(0,110),ylab="RMSE",xlab="Sample size",xaxt="n",main = "III vs VI")
-axis(1, c(1:9), labels=c('10','20','30','40','50','60','70','80','90'))
-points(N[IV,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(N1[IV,]$RMSE,lwd=3,lty=2,col="blue")
-points(N1[IV,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-legend("topright",legend  = c("BB","Pan"),
-       col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
+                  RMSE = c(N[III, ]$RMSE, N1[III, ]$RMSE),
+                  Estimator = rep(c("New","Pan"), each = 9))
+
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = 300, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "II vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "II vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+grid.arrange(p1,p2,nrow =1, ncol = 2)
+
+# IV
+df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 3),
+                 E = c(N[IV, ]$E, N1[IV, ]$E, N[IV, ]$V1),
+                 Estimator = rep(c("New","Pan","Obs"), each = 9))
+
+df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
+                  RMSE = c(N[IV, ]$RMSE, N1[IV, ]$RMSE),
+                  Estimator = rep(c("New","Pan"), each = 9))
+
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = 300, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "III vs IV") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "III vs IV") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 ############################ real data #########################################
 ##### 火災後鳥類 #####
@@ -860,10 +918,6 @@ p3 = rowSums(P_3)/ncol(P_3)
 mean(p1);sd(p1)/mean(p1)
 mean(p2);sd(p2)/mean(p2)
 mean(p3);sd(p3)/mean(p3)
-
-# sample estimate CV
-cv(P_1, )
-
 
 
 set.seed(123)
@@ -890,93 +944,166 @@ write.csv(r., "D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\table\\real.csv
 A = seq(from=1,to=15,length.out=8)
 B = A + 1
 
-par(mfrow=c(1,3),pty="s")
 r=r1; O=O1
-plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(20,60),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "I vs II")
-axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
-points(r[A,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$E,lwd=3,lty=2,col="blue")
-points(r[B,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(r[A,]$V1,lwd=3,lty=2,col="black")
-points(r[A,]$V1,lwd=3,pch=4,col="black")
-abline(h= O,lwd=3,col="gray")
-legend("bottomright",legend  = c("BB","Pan","Obs"),
-       col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE)
+df <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 3),
+                 E = c(r[A,]$E, r[B,]$E, r[A,]$V1),
+                 Estimator = rep(c("New","Pan","Obs"), each = 8))
 
-plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,20),ylab="RMSE",xlab="Sample size",xaxt="n",main = "I vs II")
-axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
-points(r[A,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$RMSE,lwd=3,lty=2,col="blue")
-points(r[B,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-legend("topright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+df2 <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 2),
+                  RMSE = c(r[A,]$RMSE, r[B,]$RMSE),
+                  CI = c(r[A,]$CI, r[B,]$CI),
+                  Estimator = rep(c("New","Pan"), each = 8))
 
-plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample size",ylim = c(0.6,.9),xaxt="n",main = "I vs II")
-axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
-points(r[A,]$CI,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$CI,lwd=3,lty=2,col="blue")
-points(r[B,]$CI,lwd=5,pch=17,cex=1.2,col="blue")
-legend("bottomright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+# I
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = O, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "I vs II") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
 
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "I vs II") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "CI") +
+  labs(title = "I vs II") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+
+
+# II
 r=r2; O=O2
-plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(20,55),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "I vs III")
-axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
-points(r[A,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$E,lwd=3,lty=2,col="blue")
-points(r[B,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(r[A,]$V1,lwd=3,lty=2,col="black")
-points(r[A,]$V1,lwd=3,pch=4,col="black")
-abline(h= O,lwd=3,col="gray")
-legend("bottomright",legend  = c("BB","Pan","Obs"),
-       col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE)
+df <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 3),
+                 E = c(r[A,]$E, r[B,]$E, r[A,]$V1),
+                 Estimator = rep(c("New","Pan","Obs"), each = 8))
 
-plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,20),ylab="RMSE",xlab="Sample size",xaxt="n",main = "I vs III")
-axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
-points(r[A,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$RMSE,lwd=3,lty=2,col="blue")
-points(r[B,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-legend("topright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+df2 <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 2),
+                  RMSE = c(r[A,]$RMSE, r[B,]$RMSE),
+                  CI = c(r[A,]$CI, r[B,]$CI),
+                  Estimator = rep(c("New","Pan"), each = 8))
 
-plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample size",ylim = c(0.6,.9),xaxt="n",main = "I vs III")
-axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
-points(r[A,]$CI,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$CI,lwd=3,lty=2,col="blue")
-points(r[B,]$CI,lwd=5,pch=17,cex=1.2,col="blue")
-legend("bottomright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = O, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "I vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
 
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "I vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "CI") +
+  labs(title = "I vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+
+
+# III
 r=r3; O=O3
-plot(r[A,]$E,type="l",lwd=3,lty=2,col="red2", ylim = c(20,60),ylab="Average Estimate",xlab="Sample size",xaxt="n",main = "II vs III")
-axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
-points(r[A,]$E,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$E,lwd=3,lty=2,col="blue")
-points(r[B,]$E,lwd=5,pch=17,cex=1.2,col="blue")
-lines(r[A,]$V1,lwd=3,lty=2,col="black")
-points(r[A,]$V1,lwd=3,pch=4,col="black")
-abline(h= O,lwd=3,col="gray")
-legend("bottomright",legend  = c("BB","Pan","Obs"),
-       col= c('red','blue','black'),lty = c(2,2,2),
-       pch=c(16,17,4),merge = TRUE)
+df <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 3),
+                 E = c(r[A,]$E, r[B,]$E, r[A,]$V1),
+                 Estimator = rep(c("New","Pan","Obs"), each = 8))
 
-plot(r[A,]$RMSE,type="l",lwd=3,lty=2,col="red2", ylim = c(0,20),ylab="RMSE",xlab="Sample size",xaxt="n",main = "II vs III")
-axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
-points(r[A,]$RMSE,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$RMSE,lwd=3,lty=2,col="blue")
-points(r[B,]$RMSE,lwd=5,pch=17,cex=1.2,col="blue")
-legend("topright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+df2 <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 2),
+                  RMSE = c(r[A,]$RMSE, r[B,]$RMSE),
+                  CI = c(r[A,]$CI, r[B,]$CI),
+                  Estimator = rep(c("New","Pan"), each = 8))
 
-plot(r[A,]$CI,type="l",lwd=3,lty=2,col="red2",ylab="95 % CI Coverage",xlab="Sample size",ylim = c(0.6,.9),xaxt="n",main = "II vs III")
-axis(1, c(1:8), labels=c("20", "40", "60", "80", "100",'120','140','160'))
-points(r[A,]$CI,lwd=5,pch=16,cex=1.2,col="red2")
-lines(r[B,]$CI,lwd=3,lty=2,col="blue")
-points(r[B,]$CI,lwd=5,pch=17,cex=1.2,col="blue")
-legend("bottomright",legend  = c("BB","Pan"),col= c('red','blue'),lty = c(2,2),
-       pch=c(16,17),merge = TRUE)
+p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  geom_hline(yintercept = O, linetype = "dashed", color = "gray30", size = 1.5) +  # 添加灰色虛線
+  scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "Average Estimate") +
+  labs(title = "II vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "RMSE") +
+  labs(title = "II vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
+  scale_y_continuous(name = "CI") +
+  labs(title = "II vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
 
 ##### Sequoia National Park #####
 P_1 = data.frame(read.csv("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\微生物 內華達\\data1.csv"))
