@@ -37,8 +37,8 @@ raw = function(data){
   }
   return(raw_data)
 }
-load("D:/nagisa/NAGISA/學校/碩班/LAB/00 研究/00 code/data/BCI/bci.tree/bci.tree1.rdata") 
-load("D:/nagisa/NAGISA/學校/碩班/LAB/00 研究/00 code/data/BCI/bci.tree/bci.tree8.rdata") 
+load("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\BCI\\bci.tree\\bci.tree1.rdata") 
+load("D:\\nagisa\\NAGISA\\學校\\碩班\\論文\\code\\data\\BCI\\bci.tree\\bci.tree8.rdata") 
 data1 = raw(bci.tree1)
 data8 = raw(bci.tree8)
 data1 = data.frame(data1)

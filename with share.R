@@ -91,9 +91,6 @@ BB = function(X,Y,t1,t2){
   k1 = max(1/2,min(1,2*f[4]^2/(3*max(1,f[1])*max(1,f[7]))))
   k2 = max(1/2,min(1,2*f[5]^2/(3*max(1,f[2])*max(1,f[8]))))
   
-  # bias小，SE大
-  # k1 = max(1/2,2*f[4]^2/(3*f[1]*f[7]))
-  # k2 = max(1/2,2*f[5]^2/(3*f[2]*f[8]))
   
   ans = if(f[4]==0 | f[5]==0 | f[6]==0){s.obs +
       K1*(f[1]*(f[1]-1)/(2*(f[4]+1)))*(2-k1) +
@@ -476,14 +473,16 @@ realdata1 = function(P_X,P_Y){
 ################################## 參數 ########################################
 times = 1000
 
-S1 = 400
-S2 = 400
+# I
+# S1 = 400
+# S2 = 400
 
 # S1 = 600
 # S2 = 600
 
-# S1 = 400
-# S2 = 600
+# II
+S1 = 400
+S2 = 600
 
 S12 = 300
 S = S1 + S2 - S12
@@ -753,6 +752,10 @@ df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', 
                  RMSE = c(N[I, ]$RMSE, N1[I, ]$RMSE),
                  Estimator = rep(c("New","Pan"), each = 9))
 
+df3 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
+                  CI = c(N[I, ]$CI, N1[I, ]$CI),
+                  Estimator = rep(c("New","Pan"), each = 9))
+
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
           geom_point(size = 3.5) +
           geom_line(size = 1.5) +
@@ -780,7 +783,22 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
   scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
 
-grid.arrange(p1,p2,nrow =1, ncol = 2)
+p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "CI coverage") +
+  labs(title = "I vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+
+grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+# grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 
 # II
@@ -792,6 +810,10 @@ df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', 
                   RMSE = c(N[II, ]$RMSE, N1[II, ]$RMSE),
                   Estimator = rep(c("New","Pan"), each = 9))
 
+df3 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
+                  CI = c(N[II, ]$CI, N1[II, ]$CI),
+                  Estimator = rep(c("New","Pan"), each = 9))
+
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
   geom_line(size = 1.5) +
@@ -819,7 +841,22 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
   scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
 
-grid.arrange(p1,p2,nrow =1, ncol = 2)
+p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "CI coverage") +
+  labs(title = "II vs II") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+
+grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+# grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 
 # III
@@ -831,6 +868,10 @@ df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', 
                   RMSE = c(N[III, ]$RMSE, N1[III, ]$RMSE),
                   Estimator = rep(c("New","Pan"), each = 9))
 
+df3 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
+                  CI = c(N[III, ]$CI, N1[III, ]$CI),
+                  Estimator = rep(c("New","Pan"), each = 9))
+
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
   geom_line(size = 1.5) +
@@ -858,7 +899,22 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
   scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
 
-grid.arrange(p1,p2,nrow =1, ncol = 2)
+p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "CI coverage") +
+  labs(title = "II vs III") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+
+grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+# grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 # IV
 df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 3),
@@ -867,6 +923,10 @@ df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '
 
 df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
                   RMSE = c(N[IV, ]$RMSE, N1[IV, ]$RMSE),
+                  Estimator = rep(c("New","Pan"), each = 9))
+
+df3 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
+                  CI = c(N[IV, ]$CI, N1[IV, ]$CI),
                   Estimator = rep(c("New","Pan"), each = 9))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
@@ -896,7 +956,22 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
   scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
 
-grid.arrange(p1,p2,nrow =1, ncol = 2)
+p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
+  geom_point(size = 3.5) +
+  geom_line(size = 1.5) +
+  scale_x_continuous(name = "Sample size", breaks = c(10, 20, 30, 40, 50, 60, 70, 80, 90), labels = c('10', '20', '30', '40', '50', '60', '70', '80', '90')) +
+  scale_y_continuous(name = "CI coverage") +
+  labs(title = "III vs IV") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  guides(color = guide_legend(override.aes = list(shape = 16)),
+         linetype = guide_legend(override.aes = list(linetype = NULL))) +
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+
+
+grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+# grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 ############################ real data #########################################
 ##### 火災後鳥類 #####
@@ -912,12 +987,11 @@ common_rows3 = which(rowSums(P_2)*rowSums(P_3)>0)
 O1 = obs(rowSums(P_1[common_rows1,]),rowSums(P_2[common_rows1,]))
 O2 = obs(rowSums(P_1[common_rows2,]),rowSums(P_3[common_rows2,]))
 O3 = obs(rowSums(P_2[common_rows3,]),rowSums(P_3[common_rows3,]))
-p1 = rowSums(P_1)/ncol(P_1)
-p2 = rowSums(P_2)/ncol(P_2)
-p3 = rowSums(P_3)/ncol(P_3)
-mean(p1);sd(p1)/mean(p1)
-mean(p2);sd(p2)/mean(p2)
-mean(p3);sd(p3)/mean(p3)
+p1 = rowSums(P_1)[which(rowSums(P_1)>0)]/ncol(P_1)
+p2 = rowSums(P_2)[which(rowSums(P_2)>0)]/ncol(P_2)
+p3 = rowSums(P_3)[which(rowSums(P_3)>0)]/ncol(P_3)
+mean(p1);mean(p2);mean(p3)
+sd(p1)/mean(p1);sd(p2)/mean(p2);sd(p3)/mean(p3)
 
 
 set.seed(123)
@@ -986,7 +1060,7 @@ p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estima
   geom_point(size = 3.5) +
   geom_line(size = 1.5) +
   scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
-  scale_y_continuous(name = "CI") +
+  scale_y_continuous(name = "CI Coverage") +
   labs(title = "I vs II") +
   theme_minimal() +
   theme(legend.position = "bottom") +
@@ -1040,7 +1114,7 @@ p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estima
   geom_point(size = 3.5) +
   geom_line(size = 1.5) +
   scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
-  scale_y_continuous(name = "CI") +
+  scale_y_continuous(name = "CI Coverage") +
   labs(title = "I vs III") +
   theme_minimal() +
   theme(legend.position = "bottom") +
@@ -1094,7 +1168,7 @@ p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estima
   geom_point(size = 3.5) +
   geom_line(size = 1.5) +
   scale_x_continuous(name = "Sample size", breaks = c(20,40,60,80,100,120,140,160), labels = c("20", "40", "60", "80", "100",'120','140','160')) +
-  scale_y_continuous(name = "CI") +
+  scale_y_continuous(name = "CI ") +
   labs(title = "II vs III") +
   theme_minimal() +
   theme(legend.position = "bottom") +
