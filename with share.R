@@ -474,15 +474,15 @@ realdata1 = function(P_X,P_Y){
 times = 1000
 
 # I
-# S1 = 400
-# S2 = 400
+S1 = 400
+S2 = 400
 
 # S1 = 600
 # S2 = 600
 
 # II
-S1 = 400
-S2 = 600
+# S1 = 400
+# S2 = 600
 
 S12 = 300
 S = S1 + S2 - S12
@@ -746,15 +746,15 @@ IV = III + 1
 # I
 df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 3),
                  E = c(N[I, ]$E, N1[I, ]$E, N[I, ]$V1),
-                 Estimator = rep(c("New","Pan","Obs"), each = 9))
+                 Estimator = rep(c("12.MoRE","Pan","Obs"), each = 9))
 
 df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
                  RMSE = c(N[I, ]$RMSE, N1[I, ]$RMSE),
-                 Estimator = rep(c("New","Pan"), each = 9))
+                 Estimator = rep(c("12.MoRE","Pan"), each = 9))
 
 df3 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
                   CI = c(N[I, ]$CI, N1[I, ]$CI),
-                  Estimator = rep(c("New","Pan"), each = 9))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 9))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
           geom_point(size = 3.5) +
@@ -767,8 +767,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimato
           theme(legend.position = "bottom") +
           guides(color = guide_legend(override.aes = list(shape = 16)),
                  linetype = guide_legend(override.aes = list(linetype = NULL))) +
-          scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-          scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+          scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+          scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -780,8 +780,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -793,26 +793,26 @@ p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estima
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 
-grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
-# grid.arrange(p1,p2,nrow =1, ncol = 2)
+# grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 
 # II
 df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 3),
                  E = c(N[II, ]$E, N1[II, ]$E, N[II, ]$V1),
-                 Estimator = rep(c("New","Pan","Obs"), each = 9))
+                 Estimator = rep(c("12.MoRE","Pan","Obs"), each = 9))
 
 df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
                   RMSE = c(N[II, ]$RMSE, N1[II, ]$RMSE),
-                  Estimator = rep(c("New","Pan"), each = 9))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 9))
 
 df3 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
                   CI = c(N[II, ]$CI, N1[II, ]$CI),
-                  Estimator = rep(c("New","Pan"), each = 9))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 9))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -825,8 +825,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimato
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -838,8 +838,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -851,26 +851,26 @@ p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estima
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 
-grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
-# grid.arrange(p1,p2,nrow =1, ncol = 2)
+# grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 
 # III
 df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 3),
                  E = c(N[III, ]$E, N1[III, ]$E, N[III, ]$V1),
-                 Estimator = rep(c("New","Pan","Obs"), each = 9))
+                 Estimator = rep(c("12.MoRE","Pan","Obs"), each = 9))
 
 df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
                   RMSE = c(N[III, ]$RMSE, N1[III, ]$RMSE),
-                  Estimator = rep(c("New","Pan"), each = 9))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 9))
 
 df3 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
                   CI = c(N[III, ]$CI, N1[III, ]$CI),
-                  Estimator = rep(c("New","Pan"), each = 9))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 9))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -883,8 +883,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimato
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -896,8 +896,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -909,25 +909,25 @@ p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estima
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 
-grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
-# grid.arrange(p1,p2,nrow =1, ncol = 2)
+# grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 # IV
 df <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 3),
                  E = c(N[IV, ]$E, N1[IV, ]$E, N[IV, ]$V1),
-                 Estimator = rep(c("New","Pan","Obs"), each = 9))
+                 Estimator = rep(c("12.MoRE","Pan","Obs"), each = 9))
 
 df2 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
                   RMSE = c(N[IV, ]$RMSE, N1[IV, ]$RMSE),
-                  Estimator = rep(c("New","Pan"), each = 9))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 9))
 
 df3 <- data.frame(sample_size = rep(c('10', '20', '30', '40', '50', '60', '70', '80', '90'), times = 2),
                   CI = c(N[IV, ]$CI, N1[IV, ]$CI),
-                  Estimator = rep(c("New","Pan"), each = 9))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 9))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -940,8 +940,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimato
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -953,8 +953,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -966,12 +966,12 @@ p3 <- ggplot(data = df3, aes(x = as.numeric(sample_size), y = CI, color = Estima
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 
-grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
-# grid.arrange(p1,p2,nrow =1, ncol = 2)
+# grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 ############################ real data #########################################
 ##### 火災後鳥類 #####
@@ -1021,12 +1021,12 @@ B = A + 1
 r=r1; O=O1
 df <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 3),
                  E = c(r[A,]$E, r[B,]$E, r[A,]$V1),
-                 Estimator = rep(c("New","Pan","Obs"), each = 8))
+                 Estimator = rep(c("12.MoRE","Pan","Obs"), each = 8))
 
 df2 <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 2),
                   RMSE = c(r[A,]$RMSE, r[B,]$RMSE),
                   CI = c(r[A,]$CI, r[B,]$CI),
-                  Estimator = rep(c("New","Pan"), each = 8))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 8))
 
 # I
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
@@ -1040,8 +1040,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimato
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1053,8 +1053,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1066,8 +1066,8 @@ p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estima
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
 
@@ -1076,12 +1076,12 @@ grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
 r=r2; O=O2
 df <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 3),
                  E = c(r[A,]$E, r[B,]$E, r[A,]$V1),
-                 Estimator = rep(c("New","Pan","Obs"), each = 8))
+                 Estimator = rep(c("12.MoRE","Pan","Obs"), each = 8))
 
 df2 <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 2),
                   RMSE = c(r[A,]$RMSE, r[B,]$RMSE),
                   CI = c(r[A,]$CI, r[B,]$CI),
-                  Estimator = rep(c("New","Pan"), each = 8))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 8))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1094,8 +1094,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimato
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1107,8 +1107,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1120,8 +1120,8 @@ p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estima
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
 
@@ -1130,12 +1130,12 @@ grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
 r=r3; O=O3
 df <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 3),
                  E = c(r[A,]$E, r[B,]$E, r[A,]$V1),
-                 Estimator = rep(c("New","Pan","Obs"), each = 8))
+                 Estimator = rep(c("12.MoRE","Pan","Obs"), each = 8))
 
 df2 <- data.frame(sample_size = rep(c("20", "40", "60", "80", "100",'120','140','160'), times = 2),
                   RMSE = c(r[A,]$RMSE, r[B,]$RMSE),
                   CI = c(r[A,]$CI, r[B,]$CI),
-                  Estimator = rep(c("New","Pan"), each = 8))
+                  Estimator = rep(c("12.MoRE","Pan"), each = 8))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1148,8 +1148,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_size), y = E, color = Estimato
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1161,8 +1161,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = RMSE, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1174,8 +1174,8 @@ p3 <- ggplot(data = df2, aes(x = as.numeric(sample_size), y = CI, color = Estima
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs")) +
-  scale_shape_manual(values = c(16, 17, 15), breaks = c("New", "Pan", "Obs"), labels = c("New", "Pan", "Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#00BA38'), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs")) +
+  scale_shape_manual(values = c(16, 17, 15), breaks = c("12.MoRE", "Pan", "Obs"), labels = c("12.MoRE", "Pan", "Obs"))
 
 grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
 
@@ -1442,5 +1442,5 @@ hc.C = hclust(jaccard_dist.C, method = "average")
 # Plot the dendrogram
 par(mfrow=c(1,3))
 plot(hc_O, xlab = "Samples", ylab = "Distance", main = "Observed")
-plot(hc.BB, xlab = "Samples", ylab = "Distance", main = "New based")
+plot(hc.BB, xlab = "Samples", ylab = "Distance", main = "MoRE based")
 plot(hc.C, xlab = "Samples", ylab = "Distance", main = "Chao2 base")

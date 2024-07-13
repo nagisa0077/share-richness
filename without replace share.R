@@ -697,11 +697,11 @@ S12 = 300
 S = S1 + S2 - S12
 S1.only = S1 - S12 ; S2.only = S2 - S12
 
-# T1 = 100
-# T2 = 100
-
 T1 = 100
-T2 = 200
+T2 = 100
+
+# T1 = 100
+# T2 = 200
 ################################ 物種分配 ######################################
 r.s.12 = c(1:S12)
 r.s.1 = c((S12+1):(S12+S1.only))
@@ -857,73 +857,73 @@ cbind(c(mean(rowSums(Z1.2)[c(1:S12,(S1+1):S)]/T2),mean(rowSums(Z2.2)[c(1:S12,(S1
 # round(wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1),2)
 # round(wor(X,Y,T1,T2,t1,t2,Z4.1,Z4.2),2)
 # Sys.time()-a
-# ################################## 估計 ########################################
-# a = Sys.time()
-# set.seed(123)
-# t1 = 0.1*T1
-# t2 = 0.1*T2
-# list1 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
-# 
-# t1 = 0.2*T1
-# t2 = 0.2*T2
-# list2 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
-# 
-# t1 = 0.3*T1
-# t2 = 0.3*T2
-# list3 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
-# 
-# t1 = 0.4*T1
-# t2 = 0.4*T2
-# list4 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
-# 
-# t1 = 0.5*T1
-# t2 = 0.5*T2
-# list5 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
-# t1 = 0.6*T1
-# t2 = 0.6*T2
-# list6 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
-# t1 = 0.7*T1
-# t2 = 0.7*T2
-# list7 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
-# 
-# t1 = 0.8*T1
-# t2 = 0.8*T2
-# list8 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
-# 
-# t1 = 0.9*T1
-# t2 = 0.9*T2
-# list9 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
-#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
-# 
-# Sys.time()-a;gc()
-# list = rbind(list1,list2,list3,list4,list5,list6,list7,list8,list9)
-# list
+################################## 估計 ########################################
+a = Sys.time()
+set.seed(123)
+t1 = 0.1*T1
+t2 = 0.1*T2
+list1 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
+
+t1 = 0.2*T1
+t2 = 0.2*T2
+list2 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
+
+t1 = 0.3*T1
+t2 = 0.3*T2
+list3 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
+
+t1 = 0.4*T1
+t2 = 0.4*T2
+list4 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
+
+t1 = 0.5*T1
+t2 = 0.5*T2
+list5 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
+t1 = 0.6*T1
+t2 = 0.6*T2
+list6 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
+t1 = 0.7*T1
+t2 = 0.7*T2
+list7 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
+
+t1 = 0.8*T1
+t2 = 0.8*T2
+list8 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
+
+t1 = 0.9*T1
+t2 = 0.9*T2
+list9 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.1),
+                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.1)),2)
+
+Sys.time()-a;gc()
+list = rbind(list1,list2,list3,list4,list5,list6,list7,list8,list9)
+list
 
 # ################################## 估計 III ########################################
 # a = Sys.time()
@@ -960,80 +960,80 @@ cbind(c(mean(rowSums(Z1.2)[c(1:S12,(S1+1):S)]/T2),mean(rowSums(Z2.2)[c(1:S12,(S1
 # Sys.time()-a;gc()
 # list = rbind(list1,list2,list3,list4)
 # list
-################################## 估計 IV ########################################
-a = Sys.time()
-set.seed(123)
-t1 = 0.1*T1
-t2 = 0.1*T2
-list1 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-
-t1 = 0.2*T1
-t2 = 0.2*T2
-list2 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-
-
-t1 = 0.3*T1
-t2 = 0.3*T2
-list3 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-
-
-t1 = 0.4*T1
-t2 = 0.4*T2
-list4 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-
-t1 = 0.5*T1
-t2 = 0.5*T2
-list5 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-
-t1 = 0.6*T1
-t2 = 0.6*T2
-list6 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-
-t1 = 0.7*T1
-t2 = 0.7*T2
-list7 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-
-
-t1 = 0.8*T1
-t2 = 0.8*T2
-list8 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-
-
-t1 = 0.9*T1
-t2 = 0.9*T2
-list9 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
-                    wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
-                    wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
-
-
-Sys.time()-a;gc()
-list = rbind(list1,list2,list3,list4,list5,list6,list7,list8,list9)
-list
+# ################################## 估計 IV ########################################
+# a = Sys.time()
+# set.seed(123)
+# t1 = 0.1*T1
+# t2 = 0.1*T2
+# list1 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# 
+# t1 = 0.2*T1
+# t2 = 0.2*T2
+# list2 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# 
+# 
+# t1 = 0.3*T1
+# t2 = 0.3*T2
+# list3 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# 
+# 
+# t1 = 0.4*T1
+# t2 = 0.4*T2
+# list4 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# 
+# t1 = 0.5*T1
+# t2 = 0.5*T2
+# list5 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# 
+# t1 = 0.6*T1
+# t2 = 0.6*T2
+# list6 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# 
+# t1 = 0.7*T1
+# t2 = 0.7*T2
+# list7 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# 
+# 
+# t1 = 0.8*T1
+# t2 = 0.8*T2
+# list8 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# 
+# 
+# t1 = 0.9*T1
+# t2 = 0.9*T2
+# list9 = round(rbind(wor(X,Y,T1,T2,t1,t2,Z1.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z2.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z2.1,Z3.2),
+#                     wor(X,Y,T1,T2,t1,t2,Z3.1,Z4.2)),2)
+# 
+# 
+# Sys.time()-a;gc()
+# list = rbind(list1,list2,list3,list4,list5,list6,list7,list8,list9)
+# list
 ################################## 分類 ########################################
 # 匯入表格
 I = c(1:4);II = c(5:8);III = c(9:12);IV = c(13:16)
@@ -1073,15 +1073,15 @@ IV = III + 1
 # I
 df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 5),
                  E = c(N[I, ]$E, N1[I, ]$E, W12[I,]$E,N3[I, ]$E, N[I, ]$V1),
-                 Estimator = rep(c("wNew","wNew2","wChao2","New","Obs"), each = 9))
+                 Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), each = 9))
 
 df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
                   RMSE = c(N[I, ]$RMSE, N1[I, ]$RMSE, W12[I,]$RMSE),
-                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+                  Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12"), each = 9))
 
 df3 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
                   CI = c(N[I, ]$CI, N1[I, ]$CI, W12[I,]$CI),
-                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+                  Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12"), each = 9))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1094,8 +1094,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
-  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1107,8 +1107,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = 
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
 p3 <- ggplot(data = df3, aes(x = as.numeric(sample_fraction), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1120,25 +1120,25 @@ p3 <- ggplot(data = df3, aes(x = as.numeric(sample_fraction), y = CI, color = Es
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
-grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
-# grid.arrange(p1,p2,nrow =1, ncol = 2)
+# grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 
 # II
 df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 5),
                  E = c(N[II, ]$E, N1[II, ]$E, W12[II,]$E,N3[II, ]$E, N[II, ]$V1),
-                 Estimator = rep(c("wNew","wNew2","wChao2","New","Obs"), each = 9))
+                 Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), each = 9))
 
 df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
                   RMSE = c(N[II, ]$RMSE, N1[II, ]$RMSE, W12[II,]$RMSE),
-                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+                  Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12"), each = 9))
 
 df3 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
                   CI = c(N[II, ]$CI, N1[II, ]$CI, W12[II,]$CI),
-                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+                  Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12"), each = 9))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1151,8 +1151,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
-  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1164,8 +1164,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = 
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
 p3 <- ggplot(data = df3, aes(x = as.numeric(sample_fraction), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1177,24 +1177,24 @@ p3 <- ggplot(data = df3, aes(x = as.numeric(sample_fraction), y = CI, color = Es
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
-grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
-# grid.arrange(p1,p2,nrow =1, ncol = 2)
+# grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 # III
 df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 5),
                  E = c(N[III,]$E, N1[III,]$E, W12[III,]$E,N3[III,]$E, N[III, ]$V1),
-                 Estimator = rep(c("wNew","wNew2","wChao2","New","Obs"), each = 9))
+                 Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), each = 9))
 
 df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
                   RMSE = c(N[III,]$RMSE, N1[III,]$RMSE, W12[III,]$RMSE),
-                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+                  Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12"), each = 9))
 
 df3 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
                   CI = c(N[III, ]$CI, N1[III, ]$CI, W12[III,]$CI),
-                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+                  Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12"), each = 9))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1207,8 +1207,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
-  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1220,8 +1220,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = 
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
 p3 <- ggplot(data = df3, aes(x = as.numeric(sample_fraction), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1233,24 +1233,24 @@ p3 <- ggplot(data = df3, aes(x = as.numeric(sample_fraction), y = CI, color = Es
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
-grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
-# grid.arrange(p1,p2,nrow =1, ncol = 2)
+# grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 # IV
 df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 5),
                  E = c(N[IV, ]$E, N1[IV, ]$E, W12[IV,]$E,N3[IV, ]$E, N[IV, ]$V1),
-                 Estimator = rep(c("wNew","wNew2","wChao2","New","Obs"), each = 9))
+                 Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), each = 9))
 
 df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
                   RMSE = c(N[IV, ]$RMSE, N1[IV, ]$RMSE, W12[IV,]$RMSE),
-                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+                  Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12"), each = 9))
 
 df3 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
                   CI = c(N[IV, ]$CI, N1[IV, ]$CI, W12[IV,]$CI),
-                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+                  Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12"), each = 9))
 
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1263,8 +1263,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
-  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1276,8 +1276,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = 
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
 p3 <- ggplot(data = df3, aes(x = as.numeric(sample_fraction), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1289,11 +1289,11 @@ p3 <- ggplot(data = df3, aes(x = as.numeric(sample_fraction), y = CI, color = Es
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
-grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
-# grid.arrange(p1,p2,nrow =1, ncol = 2)
+# grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
+grid.arrange(p1,p2,nrow =1, ncol = 2)
 
 ############################ real data #########################################
 ##### BCI #####
@@ -1327,12 +1327,12 @@ A;B;C
 
 df <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 4),
                  E = c(r[A,]$E, r[B,]$E, r[C,]$E, r[A,]$V1),
-                 Estimator = rep(c("wNew","wNew2","wChao2","Obs"), each = 9))
+                 Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12","Obs"), each = 9))
 
 df2 <- data.frame(sample_fraction = rep(c(.1, .2, .3, .4, .5, .6, .7, .8, .9), times = 3),
                   RMSE = c(r[A,]$RMSE, r[B,]$RMSE, r[C,]$RMSE),
                   CI = c(r[A,]$CI, r[B,]$CI, r[C,]$CI),
-                  Estimator = rep(c("wNew","wNew2","wChao2"), each = 9))
+                  Estimator = rep(c("12.wMoRE1","12.wMoRE2","wChao2.12"), each = 9))
   
 p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1345,8 +1345,8 @@ p1 <- ggplot(data = df, aes(x = as.numeric(sample_fraction), y = E, color = Esti
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs")) +
-  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New","Obs"), labels = c("wNew","wNew2","wChao2","New","Obs"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE','#00BA38'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE","Obs"))
 
 p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1358,8 +1358,8 @@ p2 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = RMSE, color = 
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
 p3 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = CI, color = Estimator, shape = Estimator)) +
   geom_point(size = 3.5) +
@@ -1371,8 +1371,8 @@ p3 <- ggplot(data = df2, aes(x = as.numeric(sample_fraction), y = CI, color = Es
   theme(legend.position = "bottom") +
   guides(color = guide_legend(override.aes = list(shape = 16)),
          linetype = guide_legend(override.aes = list(linetype = NULL))) +
-  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New")) +
-  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("wNew","wNew2","wChao2","New"), labels = c("wNew","wNew2","wChao2","New"))
+  scale_color_manual(values = c('#619CFF','#F8766D','#E76BF3','#00BFCE'), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE")) +
+  scale_shape_manual(values = c(16, 17, 18, 4, 15), breaks = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"), labels = c("12.wMoRE1","12.wMoRE2","wChao2.12","12.MoRE"))
 
 grid.arrange(p1,p2,p3,nrow =1, ncol = 3)
 
@@ -1639,6 +1639,6 @@ hc.C = hclust(jaccard_dist.C, method = "average")
 # Plot the dendrogram
 par(mfrow=c(1,3))
 plot(hc_O, xlab = "Samples", ylab = "Distance", main = "Observed")
-plot(hc.BB, xlab = "Samples", ylab = "Distance", main = "New based")
+plot(hc.BB, xlab = "Samples", ylab = "Distance", main = "MoRE based")
 plot(hc.C, xlab = "Samples", ylab = "Distance", main = "Chao2 base")
 
