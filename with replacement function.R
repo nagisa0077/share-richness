@@ -11,7 +11,7 @@ population = function(TT,theta,S){
   return(population)
 }
 Sample = function(TT,t,population){
-  sample_exist = sample(TT,t)
+  sample_exist = sample(TT,t,T)
   sample = population[,sample_exist]
   # sample = rowSums(population[,sample_exist])
   return(sample)
@@ -117,19 +117,15 @@ Var <-  function(data1,data2){
     f[10] <- sum(X==0 | Y==0)
     return(f)
   }
-  var = function(s.obs,f1,f2,f3,f4,f5,f6,f7,f8,t1,t2){
+  var <-  function(s.obs,f1,f2,f3,f4,f5,f6,f7,f8,t1,t2){
     K1 = (t1-1)/t1
     K2 = (t2-1)/t2
     
     # bias大，SE小
-    k1 = max(1/2,min(1,2*f4^2/(3*max(1,f1)*max(1,f7))))
-    k2 = max(1/2,min(1,2*f5^2/(3*max(1,f2)*max(1,f8))))
+    k1 <- max(1/2,min(1,2*f4^2/(3*max(1,f1)*max(1,f7))))
+    k2 <- max(1/2,min(1,2*f5^2/(3*max(1,f2)*max(1,f8))))
     
-    # bias小，SE大
-    # k1 = max(1/2,2*f[4]^2/(3*f[1]*f[7]))
-    # k2 = max(1/2,2*f[5]^2/(3*f[2]*f[8]))
-    
-    ans = if(f4==0 | f5==0 | f6==0){s.obs +
+    ans <- if(f4==0 | f5==0 | f6==0){s.obs +
         K1*(f1*(f1-1)/(2*(f4+1)))*(2-k1) +
         K2*(f2*(f2-1)/(2*(f5+1)))*(2-k2) +
         K1*K2*(f3*(f3-1)/(4*(f6+1)))*(2-k1)*(2-k2)
@@ -140,9 +136,9 @@ Var <-  function(data1,data2){
     }
     return(ans)
   }
-  SD  = function(X,Y,t1,t2,O,d){
-    f = f.fun(X,Y)
-    V = c((var(O,f[1]+d,f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
+  SD  <-  function(X,Y,t1,t2,O,d){
+    f <-f.fun(X,Y)
+    V <- c((var(O,f[1]+d,f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
           (var(O,f[1],f[2]+d,f[3],f[4],f[5],f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
           (var(O,f[1],f[2],f[3]+d,f[4],f[5],f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
           (var(O,f[1],f[2],f[3],f[4]+d,f[5],f[6],f[7],f[8],t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,
@@ -152,10 +148,10 @@ Var <-  function(data1,data2){
           (var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8]+d,t1,t2)-var(O,f[1],f[2],f[3],f[4],f[5],f[6],f[7],f[8],t1,t2))/d,-1)
     return(V)
   }
-  covmatrix = function(X,Y,s,O){
-    f = c(f.fun(X,Y)) #用Sobs去建立covarance matrix
-    f = c(f[1:8],s-O)
-    cov_matrix = matrix(0, nrow = 9, ncol = 9)
+  covmatrix <-  function(X,Y,s,O){
+    f <- c(f.fun(X,Y)) #用Sobs去建立covarance matrix
+    f <- c(f[1:8],s-O)
+    cov_matrix <- matrix(0, nrow = 9, ncol = 9)
     for(i in 1:length(f)){
       for(j in 1:length(f)){
         if(i == j){
