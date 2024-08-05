@@ -1,39 +1,3 @@
-#### simulation population & sample ####
-T1 = T2 = 100
-S = 300
-population = function(TT,theta,S){
-  Z = sapply(1:S, function(j) rbinom(1,TT,theta[j]))
-  population = matrix(0,S,TT) 
-  for(i in 1:S){
-    exist = sample(TT,Z[i])
-    population[i,exist] = 1
-  }
-  return(population)
-}
-Sample = function(TT,t,population){
-  sample_exist = sample(TT,t)
-  sample = population[,sample_exist]
-  # sample = rowSums(population[,sample_exist])
-  return(sample)
-}
-set.seed(123)
-p2.1 = runif(S,0,.24)
-
-# Broken-Stick
-c = .9
-set.seed(123)
-p3.1 <- rexp(S)
-p3.1 <- p3.1/(max(p3.1)*c)
-for(i in 1:S){
-  p3.1[i] = ifelse(p3.1[i]>1, 1, p3.1[i])
-}
-
-Z1 = population(T1,p2.1,S)
-Z2 = population(T1,p3.1,S)
-
-data1 = Sample(T1,50,Z1)
-data2 = Sample(T2,50,Z2)
-
 #### function ####
 Est <-  function(data1,data2,T1,T2){
   X <-  rowSums(data1)
@@ -138,10 +102,10 @@ Var <-  function(data1,data2,T1,T2){
     f <- f.fun(X,Y)
     # f1=f[1];f2=f[2];f3=f[3];f4=f[4];f5=f[5]
     V <- c((var(O,f[1]+d,f[2],f[3],f[4],f[5],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],t1,t2,T1,T2))/d,
-          (var(O,f[1],f[2]+d,f[3],f[4],f[5],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],t1,t2,T1,T2))/d,
-          (var(O,f[1],f[2],f[3]+d,f[4],f[5],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],t1,t2,T1,T2))/d,
-          (var(O,f[1],f[2],f[3],f[4]+d,f[5],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],t1,t2,T1,T2))/d,
-          (var(O,f[1],f[2],f[3],f[4],f[5]+d,t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],t1,t2,T1,T2))/d,-1)
+           (var(O,f[1],f[2]+d,f[3],f[4],f[5],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],t1,t2,T1,T2))/d,
+           (var(O,f[1],f[2],f[3]+d,f[4],f[5],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],t1,t2,T1,T2))/d,
+           (var(O,f[1],f[2],f[3],f[4]+d,f[5],t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],t1,t2,T1,T2))/d,
+           (var(O,f[1],f[2],f[3],f[4],f[5]+d,t1,t2,T1,T2)-var(O,f[1],f[2],f[3],f[4],f[5],t1,t2,T1,T2))/d,-1)
     return(V)
   }
   covmatrix <-  function(X,Y,s,O){
@@ -175,6 +139,42 @@ Var <-  function(data1,data2,T1,T2){
   SD <-  sqrt(abs(t(sd) %*% matrix %*% sd))
   return(SD)
 }
+
+#### simulation population & sample ####
+T1 = T2 = 100
+S = 300
+population = function(TT,theta,S){
+  Z = sapply(1:S, function(j) rbinom(1,TT,theta[j]))
+  population = matrix(0,S,TT) 
+  for(i in 1:S){
+    exist = sample(TT,Z[i])
+    population[i,exist] = 1
+  }
+  return(population)
+}
+Sample = function(TT,t,population){
+  sample_exist = sample(TT,t)
+  sample = population[,sample_exist]
+  # sample = rowSums(population[,sample_exist])
+  return(sample)
+}
+set.seed(123)
+p2.1 = runif(S,0,.24)
+
+# Broken-Stick
+c = .9
+set.seed(123)
+p3.1 <- rexp(S)
+p3.1 <- p3.1/(max(p3.1)*c)
+for(i in 1:S){
+  p3.1[i] = ifelse(p3.1[i]>1, 1, p3.1[i])
+}
+
+Z1 = population(T1,p2.1,S)
+Z2 = population(T1,p3.1,S)
+
+data1 = Sample(T1,50,Z1)
+data2 = Sample(T2,50,Z2)
 
 #### test result ####
 Est(data1,data2,T1,T2)
